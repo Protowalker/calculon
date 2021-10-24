@@ -1,4 +1,5 @@
-import { TextField, Typography } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { changeInput, selectInput } from "../../Store/Inputs";
@@ -6,7 +7,7 @@ import { BaseInput, BaseInputData } from "./Input";
 
 export type TextInputData = BaseInputData & { kind: "text"; value: string };
 
-export function TextInput({ input }: { input: TextInputData }) {
+export default function TextInput({ input }: { input: TextInputData }) {
   const dispatch = useAppDispatch();
 
   return (

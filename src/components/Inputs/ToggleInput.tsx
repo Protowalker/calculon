@@ -1,4 +1,8 @@
-import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Typography from "@mui/material/Typography";
+
 import { useAppDispatch } from "../../Store/Hooks";
 import { changeInput } from "../../Store/Inputs";
 import { BaseInput, BaseInputData } from "./Input";
@@ -8,7 +12,7 @@ export type ToggleInputData = BaseInputData & {
   value: boolean;
 };
 
-export function ToggleInput({ input }: { input: ToggleInputData }) {
+export default function ToggleInput({ input }: { input: ToggleInputData }) {
   const dispatch = useAppDispatch();
   return (
     <BaseInput input={input}>

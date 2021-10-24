@@ -1,24 +1,29 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  Paper,
-} from "@mui/material";
-import * as Icons from "@mui/icons-material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+
+import SettingsIcon from "@mui/icons-material/Settings";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import { selectEditMode } from "../../Store/EditMode";
 import { InputData, removeInput, selectInput } from "../../Store/Inputs";
-import { TextInput } from "./TextInput";
-import { ToggleInput } from "./ToggleInput";
+import TextInput from "./TextInput";
+import ToggleInput from "./ToggleInput";
+import NumberInput from "./NumberInput";
 import { useAppSelector } from "../../Store/Hooks";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
-import {NumberInput} from "./NumberInput";
 
-export type BaseInputData = { name: string; displayName: string };
+export type BaseInputData = {
+  name: string;
+  displayName: string;
+  order: number;
+};
 
 export function BaseInput(props: {
   children: React.ReactNode;
@@ -43,10 +48,10 @@ export function BaseInput(props: {
       {editMode ? (
         <Box sx={{ justifyItems: "end", alignItems: "center" }}>
           <IconButton>
-            <Icons.Settings />
+            <SettingsIcon />
           </IconButton>
           <IconButton onClick={() => setDeleteConfOpen(true)}>
-            <Icons.Delete />
+            <DeleteIcon />
           </IconButton>
           <Dialog
             open={deleteConfOpen}
@@ -73,7 +78,11 @@ export function InputFromName({ name }: { name: string }) {
   return input ? <InputFromData input={input} /> : <p>INVALID</p>;
 }
 
-function InputFromData({ input }: { input: InputData }): React.ReactElement {
+export function InputFromData({
+  input,
+}: {
+  input: InputData;
+}): React.ReactElement {
   switch (input.kind) {
     case "text":
       return <TextInput input={input} />;

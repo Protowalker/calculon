@@ -19,18 +19,21 @@ const initialState: Record<string, InputData> = loadFromLocalStorage() ?? {
     name: "aTextInput",
     displayName: "A Text Input",
     value: "heyo",
+    order: 1,
   },
   aToggleInput: {
     kind: "toggle",
     name: "aToggleInput",
     displayName: "A Toggle Input",
     value: true,
+    order: 10,
   },
   aNumberInput: {
     kind: "number",
     name: "aNumberInput",
     displayName: "A Number Input",
     value: 10,
+    order: 3,
   },
 };
 
@@ -58,6 +61,7 @@ export const inputsSlice = createSlice({
 export const { addInput, removeInput, changeInput } = inputsSlice.actions;
 
 export const selectInputNames = (state: RootState) => Object.keys(state.inputs);
+export const selectInputs = (state: RootState) => state.inputs;
 
 export const selectInput = (state: RootState, name: string) =>
   state.inputs[name];

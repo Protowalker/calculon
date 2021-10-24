@@ -1,4 +1,6 @@
-import { Paper, TextField, Typography } from "@mui/material";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import * as math from "mathjs";
 import { useMemo, useState } from "react";
 import { selectEditMode } from "../Store/EditMode";

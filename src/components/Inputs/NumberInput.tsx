@@ -1,4 +1,6 @@
-import { TextField, Typography } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppDispatch } from "../../Store/Hooks";
 import { changeInput } from "../../Store/Inputs";
@@ -6,7 +8,7 @@ import { BaseInput, BaseInputData } from "./Input";
 
 export type NumberInputData = BaseInputData & { kind: "number"; value: number };
 
-export function NumberInput({ input }: { input: NumberInputData }) {
+export default function NumberInput({ input }: { input: NumberInputData }) {
   const dispatch = useAppDispatch();
 
   const [textValue, setTextValue] = useState(input.value.toString());
