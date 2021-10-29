@@ -16,7 +16,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noImplicitAny": true,
-    "noImplicitThis": true 
+    "noImplicitThis": true,
+    "baseUrl": "src"
   },
   "include": ["src/**/*"],
   "exclude": ["build/**/*", "**/node_modules", "**/.*/"]

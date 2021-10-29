@@ -1,18 +1,27 @@
-import Box from "@mui/material/Box";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
-
+import BaseInput from "components/Inputs/BaseInput";
 import { useAppDispatch } from "../../Store/Hooks";
 import { changeInput } from "../../Store/Inputs";
-import { BaseInput, BaseInputData } from "./Input";
 
-export type ToggleInputData = BaseInputData & {
-  kind: "toggle";
-  value: boolean;
-};
+export const ToggleInputData = Object.freeze({
+  kind: "toggle" as const,
+  name: "",
+  displayName: "A Toggle Input",
+  order: -1,
+  value: false,
+});
 
-export default function ToggleInput({ input }: { input: ToggleInputData }) {
+//export type ToggleInputData = {
+//  -readonly [K in keyof typeof ToggleInputData]: typeof ToggleInputData[K];
+//};
+
+export default function ToggleInput({
+  input,
+}: {
+  input: typeof ToggleInputData;
+}) {
   const dispatch = useAppDispatch();
   return (
     <BaseInput input={input}>

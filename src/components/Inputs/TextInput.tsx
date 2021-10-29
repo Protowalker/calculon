@@ -1,13 +1,18 @@
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import { changeInput, selectInput } from "../../Store/Inputs";
-import { BaseInput, BaseInputData } from "./Input";
+import { useAppDispatch } from "../../Store/Hooks";
+import { changeInput } from "../../Store/Inputs";
+import BaseInput from "components/Inputs/BaseInput";
 
-export type TextInputData = BaseInputData & { kind: "text"; value: string };
+export const TextInputData = Object.freeze({
+  kind: "text" as const,
+  name: "",
+  displayName: "A Text Input",
+  order: -1,
+  value: "",
+});
 
-export default function TextInput({ input }: { input: TextInputData }) {
+export default function TextInput({ input }: { input: typeof TextInputData }) {
   const dispatch = useAppDispatch();
 
   return (
@@ -17,7 +22,7 @@ export default function TextInput({ input }: { input: TextInputData }) {
         size="small"
         placeholder="Input Value"
         value={input.value}
-        onChange={(v) =>
+        onChange={(v: any) =>
           dispatch(changeInput({ ...input, value: v.target.value }))
         }
       ></TextField>

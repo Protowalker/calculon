@@ -1,11 +1,17 @@
 import Stack from "@mui/material/Stack";
-import { TextOutput } from "./Output";
+import { useAppSelector } from "Store/Hooks";
+import { selectOutputs } from "Store/Outputs";
+import { OutputFromData } from "./Outputs/Output";
 
 export function CalcOutput() {
+  const outputs = useAppSelector((state) =>
+    Object.values(selectOutputs(state))
+  );
   return (
-    <Stack spacing={1}>
-      <TextOutput />
-      <TextOutput />
+    <Stack spacing={1} maxWidth="50rem">
+      {outputs.map((output) => (
+        <OutputFromData output={output} key={output.name} />
+      ))}
     </Stack>
   );
 }

@@ -1,9 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { editModeReducer } from "./EditMode";
 import { inputsReducer } from "./Inputs";
+import { outputsReducer } from "./Outputs";
 
 export const store = configureStore({
-  reducer: { inputs: inputsReducer, editMode: editModeReducer },
+  reducer: {
+    inputs: inputsReducer,
+    outputs: outputsReducer,
+    editMode: editModeReducer,
+  },
 });
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;

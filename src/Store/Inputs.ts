@@ -4,7 +4,10 @@ import { TextInputData } from "../components/Inputs/TextInput";
 import { ToggleInputData } from "../components/Inputs/ToggleInput";
 import { RootState } from "./Store";
 
-export type InputData = TextInputData | ToggleInputData | NumberInputData;
+export type InputData =
+  | typeof TextInputData
+  | typeof ToggleInputData
+  | typeof NumberInputData;
 
 function loadFromLocalStorage(): Record<string, InputData> | undefined {
   const jsonString = localStorage.getItem("calculonInputData");
@@ -19,21 +22,21 @@ const initialState: Record<string, InputData> = loadFromLocalStorage() ?? {
     name: "aTextInput",
     displayName: "A Text Input",
     value: "heyo",
-    order: 1,
+    order: 0,
   },
   aToggleInput: {
     kind: "toggle",
     name: "aToggleInput",
     displayName: "A Toggle Input",
     value: true,
-    order: 10,
+    order: 1,
   },
   aNumberInput: {
     kind: "number",
     name: "aNumberInput",
     displayName: "A Number Input",
     value: 10,
-    order: 3,
+    order: 2,
   },
 };
 
@@ -42,9 +45,17 @@ export const inputsSlice = createSlice({
   initialState,
   reducers: {
     addInput: (state, action: PayloadAction<InputData>) => {
-      // Do nothing if it already exists
-      if (action.payload.name in state) return;
-      state[action.payload.name] = action.payload;
+      const payload = { ...action.payload };
+      if (payload.name in state) return;
+      // Generate a new name if empty
+      if (payload.name === "")
+        payload.name = payload.kind + Object.keys(state).length.toString();
+      // If order is -1, Push it to the end
+      if (payload.order === -1) payload.order = Object.keys(state).length;
+
+      payload.order = Math.min(payload.order, Object.keys(state).length);
+
+      state[payload.name] = payload;
     },
     removeInput: (state, action: PayloadAction<string>) => {
       delete state[action.payload];
@@ -53,7 +64,7 @@ export const inputsSlice = createSlice({
       // Don't allow invalid numbers
       if (action.payload.kind === "number" && isNaN(action.payload.value))
         return;
-      state[action.payload.name] = action.payload;
+      state[action.payload.name] = { ...action.payload };
     },
   },
 });

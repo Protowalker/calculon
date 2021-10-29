@@ -4,11 +4,21 @@ import Typography from "@mui/material/Typography";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppDispatch } from "../../Store/Hooks";
 import { changeInput } from "../../Store/Inputs";
-import { BaseInput, BaseInputData } from "./Input";
+import BaseInput from "components/Inputs/BaseInput";
 
-export type NumberInputData = BaseInputData & { kind: "number"; value: number };
+export const NumberInputData = Object.freeze({
+  kind: "number" as const,
+  name: "",
+  displayName: "A Number Input",
+  order: -1,
+  value: 0,
+});
 
-export default function NumberInput({ input }: { input: NumberInputData }) {
+export default function NumberInput({
+  input,
+}: {
+  input: typeof NumberInputData;
+}) {
   const dispatch = useAppDispatch();
 
   const [textValue, setTextValue] = useState(input.value.toString());
@@ -34,7 +44,7 @@ export default function NumberInput({ input }: { input: NumberInputData }) {
         placeholder="Input Value"
         value={textValue}
         type="number"
-        onChange={(v) => updateValue(v.currentTarget.value)}
+        onChange={(v: any) => updateValue(v.currentTarget.value)}
       ></TextField>
     </BaseInput>
   );
