@@ -39,7 +39,7 @@ const initialState: KeyedRecord<"name", InputData> =
         kind: "number",
         name: "prevAge",
         displayName: "Age 5 years ago",
-        value: 10,
+        value: 14,
         order: 2,
       },
     ],
