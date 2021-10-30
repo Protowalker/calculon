@@ -1,5 +1,5 @@
 import { DeleteIcon, SettingsIcon } from "@chakra-ui/icons";
-import { Box, HStack, IconButton } from "@chakra-ui/react";
+import { Box, chakra, HStack, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { TypographyInput } from "util/CustomComponents";
@@ -68,6 +68,7 @@ export function InputNames({ input }: { input: InputData }) {
     <span style={{ pointerEvents: editMode ? "auto" : "none" }}>
       <TypographyInput
         fontSize="lg"
+        fontWeight="bold"
         value={input.displayName}
         onChange={(v) =>
           dispatch(
@@ -77,11 +78,10 @@ export function InputNames({ input }: { input: InputData }) {
         isReadOnly={!editMode}
       />{" "}
       {editMode && (
-        <span>
+        <chakra.span fontStyle="italic">
           {"("}
 
           <TypographyInput
-            fontSize="subtitle1"
             value={input.name}
             onChange={(v) =>
               dispatch(changeInput(input.uuid, { name: v.currentTarget.value }))
@@ -90,7 +90,7 @@ export function InputNames({ input }: { input: InputData }) {
           />
 
           {")"}
-        </span>
+        </chakra.span>
       )}
     </span>
   );

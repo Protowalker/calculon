@@ -41,7 +41,8 @@ export default function TextOutput({
       <Flex direction="column">
         <span>
           <TypographyInput
-            fontSize="xl"
+            fontSize="lg"
+            fontWeight="bold"
             value={output.displayName}
             isReadOnly={!editMode}
             onChange={(v) =>
@@ -54,23 +55,21 @@ export default function TextOutput({
             sx={{ textAlign: "right" }}
           />{" "}
         </span>
-        {editMode ? (
-          <Textarea
-            value={output.value}
-            onChange={(v) => {
-              dispatch(
-                changeOutput(output.uuid, { value: v.currentTarget.value })
-              );
-            }}
-            isFullWidth
-            width={output.value.length.toString() + "ch"}
-            minWidth="30ch"
-            maxWidth="80ch"
-            overflowWrap="break-word"
-          />
-        ) : (
-          <Text>{text}</Text>
-        )}
+        <Textarea
+          value={output.value}
+          display={editMode ? "initial" : "none"}
+          onChange={(v) => {
+            dispatch(
+              changeOutput(output.uuid, { value: v.currentTarget.value })
+            );
+          }}
+          isFullWidth
+          width={output.value.length.toString() + "ch"}
+          minWidth="30ch"
+          maxWidth="80ch"
+          overflowWrap="break-word"
+        />
+        <Text display={editMode ? "none" : "initial"}>{text}</Text>
       </Flex>
     </BaseOutput>
   );
