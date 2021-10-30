@@ -31,7 +31,7 @@ export default function BaseOutput({
       }}
     >
       {editMode ? (
-        <Box sx={{ justifyItems: "end", alignItems: "center" }}>
+        <Box sx={{ justifyContent: "end", alignItems: "center" }}>
           <IconButton>
             <SettingsIcon />
           </IconButton>
@@ -51,7 +51,7 @@ export default function BaseOutput({
           </IconButton>
         </Box>
       ) : null}
-      <Box>{children}</Box>
+      <Box sx={{ ml: "auto" }}>{children}</Box>
     </Paper>
   );
 }

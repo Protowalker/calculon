@@ -9,6 +9,8 @@ import { parseExpressionString } from "./Output";
 import _ from "lodash";
 import { changeOutput } from "Store/Outputs";
 import BaseOutput from "./BaseOutput";
+import { HiddenTextField, TypographyInput } from "util/MuiComponents";
+import Box from "@mui/material/Box";
 
 export const TextOutputData = Object.freeze({
   kind: "text" as const,
@@ -36,25 +38,46 @@ export default function TextOutput({
 
   return (
     <BaseOutput output={output}>
-      <Typography variant="h6">{output.displayName}</Typography>
-      {editMode ? (
-        <TextField
-          value={output.value}
-          onChange={(v: any) =>
-            dispatch(
-              changeOutput(output.name, { value: v.currentTarget.value })
-            )
-          }
-          sx={{
-            width: `${output.value.length + 3}ch`,
-            maxWidth: "40vw",
-            minWidth: "100%",
-          }}
-          multiline
-        />
-      ) : (
-        <Typography>{text}</Typography>
-      )}
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <span>
+          <TypographyInput
+            variant="h6"
+            value={output.displayName}
+            readOnly={!editMode}
+            inputProps={{ style: { textAlign: "right" } }}
+          />{" "}
+          {editMode && (
+            <span>
+              {"("}
+
+              <TypographyInput
+                variant="subtitle1"
+                value={output.name}
+                inputProps={{
+                  size: output.name.length - 4,
+                  style: { textAlign: "center" },
+                }}
+              />
+
+              {")"}
+            </span>
+          )}
+        </span>
+        {editMode ? (
+          <TextField
+            value={output.value}
+            onChange={(v: any) =>
+              dispatch(
+                changeOutput(output.name, { value: v.currentTarget.value })
+              )
+            }
+            inputProps={{ size: output.value.length }}
+            multiline
+          />
+        ) : (
+          <Typography>{text}</Typography>
+        )}
+      </Box>
     </BaseOutput>
   );
 }

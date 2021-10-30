@@ -20,10 +20,21 @@ export const outputsSlice = createSlice({
   reducers: {
     addOutput: (state, action: PayloadAction<OutputData>) => {
       const payload = { ...action.payload };
-      if (payload.name in state) return;
+      if (payload.name in state) {
+        return;
+      }
       // e.g. text5
-      if (payload.name === "")
-        payload.name = payload.kind + Object.keys(state).length.toString();
+      if (payload.name === "") {
+        // Find all the inputs with names fitting the pattern "[kind]{number}"
+        const nextNumber = Object.keys(state)
+          .filter((n) => n.startsWith(payload.kind))
+          .reduce((acc, v) => {
+            const number = parseInt(v.replace(/\D/g, ""));
+            if (!isNaN(number) && number > acc) return number;
+            else return acc;
+          }, -1);
+        payload.name = payload.kind + (nextNumber + 1).toString();
+      }
       if (payload.order === -1) payload.order = Object.keys(state).length;
       // Make sure that payload.order is only as big as the end of the list
       payload.order = Math.min(payload.order, Object.keys(state).length);

@@ -6,7 +6,7 @@
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.0.4",
-    "@mui/material": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/material",
+    "@mui/material": "*",
     "@reduxjs/toolkit": "^1.6.2",
     "framer-motion": "^4.1.17",
     "mathjs": "^9.5.1",
