@@ -2,14 +2,25 @@
   "name": "calculon",
   "version": "0.1.0",
   "private": true,
-  "engines" :{
+  "engines": {
     "node": "16.3"
   },
   "dependencies": {
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
-    "@mui/icons-material": "^5.0.4",
-    "@mui/material": "*",
+    "@mui/codemod": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/codemod",
+    "@mui/core": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/core",
+    "@mui/icons-material": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/icons-material",
+    "@mui/lab": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/lab",
+    "@mui/material": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/material",
+    "@mui/material-next": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/material-next",
+    "@mui/private-theming": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/private-theming",
+    "@mui/styled-engine": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/styled-engine",
+    "@mui/styled-engine-sc": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/styled-engine-sc",
+    "@mui/styles": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/styles",
+    "@mui/system": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/system",
+    "@mui/types": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/types",
+    "@mui/utils": "https://pkg.csb.dev/mui-org/material-ui/commit/e6bb6c32/@mui/utils",
     "@reduxjs/toolkit": "^1.6.2",
     "framer-motion": "^4.1.17",
     "mathjs": "^9.5.1",

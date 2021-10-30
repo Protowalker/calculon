@@ -1,7 +1,10 @@
-import { Button, Paper, Typography } from "@mui/material";
-import Box, { BoxProps } from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid/Grid";
 import Switch from "@mui/material/Switch";
+
 import { useCallback } from "react";
 import { selectEditMode, toggleEditMode } from "../Store/EditMode";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
@@ -12,14 +15,6 @@ import { CalcInput } from "./CalcInput";
 import { CalcOutput } from "./CalcOutput";
 import { InputComponentMap, InputDataMap } from "./Inputs/InputMap";
 import { OutputComponentMap, OutputDataMap } from "./Outputs/OutputMap";
-
-const Center = (props: BoxProps) => (
-  <Box {...props} sx={{ ...props.sx, mx: "auto" }} />
-);
-
-const Square = (props: BoxProps) => (
-  <Center {...props} sx={{ ...props.sx, aspectRatio: "1" }} />
-);
 
 export function CalcFrame() {
   return (
@@ -67,13 +62,13 @@ function LeftEditBar() {
         height: editMode ? "100%" : "4rem",
       }}
     >
-      <Center>
+      <Container>
         <Switch
           sx={{ mt: "0.75rem" }}
           value={editMode}
           onClick={() => dispatch(toggleEditMode())}
         />
-      </Center>
+      </Container>
       {editMode &&
         typedObjectKeys(InputComponentMap).map((input) => (
           <Button

@@ -1,14 +1,9 @@
-import { Box, InputBase, InputBaseProps } from "@mui/material";
+import Box from "@mui/material/Box";
+import InputBase, { InputBaseProps } from "@mui/material/InputBase";
 import { useTheme } from "@mui/material/styles";
 import { Variant } from "@mui/material/styles/createTypography";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export const HiddenTextField: React.FC<TextFieldProps> = (
   props: TextFieldProps
