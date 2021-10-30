@@ -16,6 +16,7 @@ export const TextOutputData = Object.freeze({
   kind: "text" as const,
   name: "",
   displayName: "A Text Output",
+  uuid: "",
   order: -1,
   value: "",
 });
@@ -26,8 +27,10 @@ export default function TextOutput({
   output: typeof TextOutputData;
 }) {
   const inputs = useAppSelector((state) =>
-    _.mapValues(selectInputs(state), (input) => input.value)
-  );
+    _(selectInputs(state))
+      .mapKeys((input) => input.name)
+      .mapValues((input) => input.value)
+  ).value();
   const editMode = useAppSelector(selectEditMode);
   const dispatch = useAppDispatch();
 
@@ -44,17 +47,24 @@ export default function TextOutput({
             variant="h6"
             value={output.displayName}
             readOnly={!editMode}
+            onChange={(v: any) =>
+              dispatch(
+                changeOutput(output.uuid, {
+                  displayName: v.currentTarget.value,
+                })
+              )
+            }
             inputProps={{ style: { textAlign: "right" } }}
           />{" "}
         </span>
         {editMode ? (
           <TextField
             value={output.value}
-            onChange={(v: any) =>
+            onChange={(v: any) => {
               dispatch(
-                changeOutput(output.name, { value: v.currentTarget.value })
-              )
-            }
+                changeOutput(output.uuid, { value: v.currentTarget.value })
+              );
+            }}
             inputProps={{ size: output.value.length }}
             multiline
           />

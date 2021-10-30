@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppDispatch } from "../../Store/Hooks";
 import { changeInput } from "../../Store/Inputs";
 import BaseInput, { InputNames } from "components/Inputs/BaseInput";
+import { nanoid } from "@reduxjs/toolkit";
 
 export const NumberInputData = Object.freeze({
   kind: "number" as const,
@@ -13,6 +14,7 @@ export const NumberInputData = Object.freeze({
   displayName: "A Number Input",
   order: -1,
   value: 0,
+  uuid: "",
 });
 
 export default function NumberInput({
@@ -32,7 +34,7 @@ export default function NumberInput({
   const updateValue = useCallback(
     (value: string) => {
       setTextValue(value);
-      dispatch(changeInput(input.name, { value: parseFloat(value) }));
+      dispatch(changeInput(input.uuid, { value: parseFloat(value) }));
     },
     [input, dispatch]
   );

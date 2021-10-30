@@ -6,6 +6,7 @@ import BaseInput, { InputNames } from "components/Inputs/BaseInput";
 import { TypographyInput } from "util/MuiComponents";
 import { selectEditMode } from "Store/EditMode";
 import { Box } from "@mui/material";
+import { nanoid } from "@reduxjs/toolkit";
 
 export const TextInputData = Object.freeze({
   kind: "text" as const,
@@ -13,6 +14,7 @@ export const TextInputData = Object.freeze({
   displayName: "A Text Input",
   order: -1,
   value: "",
+  uuid: "",
 });
 
 export default function TextInput({ input }: { input: typeof TextInputData }) {
@@ -27,7 +29,7 @@ export default function TextInput({ input }: { input: typeof TextInputData }) {
           placeholder="Input Value"
           value={input.value}
           onChange={(v: any) =>
-            dispatch(changeInput(input.name, { value: v.target.value }))
+            dispatch(changeInput(input.uuid, { value: v.target.value }))
           }
         ></TextField>
       </Box>

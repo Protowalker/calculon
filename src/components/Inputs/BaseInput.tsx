@@ -46,7 +46,7 @@ export default function BaseInput(props: {
             color={deleteConfOpen ? "error" : "default"}
             onClick={() => {
               if (deleteConfOpen) {
-                dispatch(removeInput(props.input.name));
+                dispatch(removeInput(props.input.uuid));
                 setDeleteConfOpen(false);
               } else {
                 setDeleteConfOpen(true);
@@ -73,7 +73,7 @@ export function InputNames({ input }: { input: InputData }) {
         value={input.displayName}
         onChange={(v) =>
           dispatch(
-            changeInput(input.name, { displayName: v.currentTarget.value })
+            changeInput(input.uuid, { displayName: v.currentTarget.value })
           )
         }
         readOnly={!editMode}
@@ -85,6 +85,9 @@ export function InputNames({ input }: { input: InputData }) {
           <TypographyInput
             variant="subtitle1"
             value={input.name}
+            onChange={(v) =>
+              dispatch(changeInput(input.uuid, { name: v.currentTarget.value }))
+            }
             readOnly={!editMode}
           />
 

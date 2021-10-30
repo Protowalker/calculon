@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
 import { generateRecord, KeyedRecord } from "util/TypeUtils";
 import { NumberInputData } from "../components/Inputs/NumberInput";
 import { TextInputData } from "../components/Inputs/TextInput";
@@ -19,7 +19,7 @@ function loadFromLocalStorage(): Record<string, InputData> | undefined {
 
 const initialState: KeyedRecord<"name", InputData> =
   loadFromLocalStorage() ??
-  generateRecord<"name", InputData>(
+  generateRecord<"uuid", InputData>(
     [
       {
         kind: "text",
@@ -27,6 +27,7 @@ const initialState: KeyedRecord<"name", InputData> =
         displayName: "Name",
         value: "Jackie",
         order: 0,
+        uuid: "13874235bhv",
       },
       {
         kind: "toggle",
@@ -34,6 +35,7 @@ const initialState: KeyedRecord<"name", InputData> =
         displayName: "Trademark?",
         value: true,
         order: 1,
+        uuid: "1234rfujnvxc",
       },
       {
         kind: "number",
@@ -41,9 +43,10 @@ const initialState: KeyedRecord<"name", InputData> =
         displayName: "Age 5 years ago",
         value: 14,
         order: 2,
+        uuid: "1231b3n45v0xv=-",
       },
     ],
-    "name"
+    "uuid"
   );
 
 export const inputsSlice = createSlice({
@@ -52,7 +55,8 @@ export const inputsSlice = createSlice({
   reducers: {
     addInput: (state, action: PayloadAction<InputData>) => {
       const payload = { ...action.payload };
-      if (payload.name in state) return;
+      if (payload.uuid in state) return;
+      if (payload.uuid === "") payload.uuid = nanoid();
       // Generate a new name if empty
       if (payload.name === "") {
         const nextNumber = Object.keys(state)
@@ -69,7 +73,7 @@ export const inputsSlice = createSlice({
 
       payload.order = Math.min(payload.order, Object.keys(state).length);
 
-      state[payload.name] = payload;
+      state[payload.uuid] = payload;
     },
     removeInput: (state, action: PayloadAction<string>) => {
       delete state[action.payload];
@@ -77,22 +81,23 @@ export const inputsSlice = createSlice({
     changeInput: {
       reducer: (
         state,
-        action: PayloadAction<[string, Exclude<Partial<InputData>, ["kind"]>]>
+        action: PayloadAction<
+          [string, Omit<Partial<InputData>, "kind" | "uuid">]
+        >
       ) => {
-        const [name, diff] = action.payload;
-        if (!(name in state)) return;
-        const data = { ...state[name] };
+        const [uuid, diff] = action.payload;
+        if (!(uuid in state)) return;
+        const data = { ...state[uuid] };
         // Don't allow invalid numbers
-        if (diff.kind === "number" && diff.value && isNaN(diff.value)) return;
-        if (diff.name && name !== diff.name) {
-          delete state[name];
-          state[diff.name] = { ...data, ...diff } as any;
+        if (data.kind === "number" && diff.value && isNaN(diff.value as number))
           return;
-        }
-        state[name] = { ...data, ...diff } as any;
+        state[uuid] = { ...data, ...diff } as any;
       },
-      prepare: (name: string, diff: Exclude<Partial<InputData>, ["kind"]>) => {
-        return { payload: [name, diff] as [string, typeof diff] };
+      prepare: (
+        uuid: string,
+        diff: Omit<Partial<InputData>, "kind" | "uuid">
+      ) => {
+        return { payload: [uuid, diff] as [string, typeof diff] };
       },
     },
   },

@@ -10,7 +10,7 @@ export function CalcOutput() {
   return (
     <Stack spacing={1} maxWidth="50rem">
       {outputs.map((output) => (
-        <OutputFromData output={output} key={output.name} />
+        <OutputFromData output={output} key={output.uuid} />
       ))}
     </Stack>
   );

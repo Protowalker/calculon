@@ -1,12 +1,12 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
 import { TextOutputData } from "components/Outputs/TextOutput";
 import { generateRecord, KeyedRecord } from "util/TypeUtils";
 import { RootState } from "./Store";
 
 export type OutputData = typeof TextOutputData;
 
-const initialState: KeyedRecord<"name", OutputData> = generateRecord<
-  "name",
+const initialState: KeyedRecord<"uuid", OutputData> = generateRecord<
+  "uuid",
   OutputData
 >(
   [
@@ -14,11 +14,12 @@ const initialState: KeyedRecord<"name", OutputData> = generateRecord<
       kind: "text",
       name: "text0",
       displayName: "Age Calculation",
+      uuid: "131dfvcgbdr5t",
       order: 0,
       value: "{{name}} {{tm ? '(TM)' : ''}} is {{prevAge + 5}} years old.",
     },
   ],
-  "name"
+  "uuid"
 );
 
 export const outputsSlice = createSlice({
@@ -27,9 +28,10 @@ export const outputsSlice = createSlice({
   reducers: {
     addOutput: (state, action: PayloadAction<OutputData>) => {
       const payload = { ...action.payload };
-      if (payload.name in Object.keys(state)) {
+      if (payload.uuid in state) {
         return;
       }
+      if (payload.uuid === "") payload.uuid = nanoid();
       // e.g. text5
       if (payload.name === "") {
         // Find all the inputs with names fitting the pattern "[kind]{number}"
@@ -46,7 +48,7 @@ export const outputsSlice = createSlice({
       // Make sure that payload.order is only as big as the end of the list
       payload.order = Math.min(payload.order, Object.keys(state).length);
 
-      state[payload.name] = payload;
+      state[payload.uuid] = payload;
     },
     removeOutput: (state, action: PayloadAction<string>) => {
       delete state[action.payload];
@@ -54,25 +56,24 @@ export const outputsSlice = createSlice({
     changeOutput: {
       reducer: (
         state,
-        action: PayloadAction<[string, Exclude<Partial<OutputData>, ["kind"]>]>
+        action: PayloadAction<
+          [string, Omit<Partial<OutputData>, "kind" | "uuid">]
+        >
       ) => {
-        const [name, diff] = action.payload;
-        if (!(name in Object.keys(state))) {
-          console.log(Object.keys(state));
+        const [uuid, diff] = action.payload;
+        if (!(uuid in state)) {
           return;
         }
-        const data = { ...state[name] };
+        const data = { ...state[uuid] };
 
-        if (diff.name && name !== diff.name) {
-          delete state[name];
-          state[diff.name] = { ...data, ...diff };
-          return;
-        }
-        state[name] = { ...data, ...diff };
+        state[uuid] = { ...data, ...diff };
       },
-      prepare: (name: string, diff: Exclude<Partial<OutputData>, ["kind"]>) => {
+      prepare: (
+        uuid: string,
+        diff: Omit<Partial<OutputData>, "kind" | "uuid">
+      ) => {
         return {
-          payload: [name, diff] as [string, typeof diff],
+          payload: [uuid, diff] as [string, typeof diff],
         };
       },
     },

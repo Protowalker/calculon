@@ -39,7 +39,7 @@ export default function BaseOutput({
             color={deleteConfOpen ? "error" : "default"}
             onClick={() => {
               if (deleteConfOpen) {
-                dispatch(removeOutput(output.name));
+                dispatch(removeOutput(output.uuid));
                 setDeleteConfOpen(false);
               } else {
                 setDeleteConfOpen(true);

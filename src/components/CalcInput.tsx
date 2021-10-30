@@ -18,7 +18,7 @@ export function CalcInput() {
     <Stack spacing={1}>
       <Stack spacing={1}>
         {inputs.map((input) => (
-          <InputFromData input={input} key={input.name} />
+          <InputFromData input={input} key={input.uuid} />
         ))}
       </Stack>
     </Stack>

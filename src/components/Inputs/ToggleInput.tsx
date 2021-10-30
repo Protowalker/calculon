@@ -7,6 +7,7 @@ import BaseInput, { InputNames } from "components/Inputs/BaseInput";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { selectEditMode } from "Store/EditMode";
 import { changeInput } from "../../Store/Inputs";
+import { nanoid } from "@reduxjs/toolkit";
 
 export const ToggleInputData = Object.freeze({
   kind: "toggle" as const,
@@ -14,6 +15,7 @@ export const ToggleInputData = Object.freeze({
   displayName: "A Toggle Input",
   order: -1,
   value: false,
+  uuid: "",
 });
 
 //export type ToggleInputData = {
@@ -36,7 +38,7 @@ export default function ToggleInput({
               checked={input.value}
               onChange={(v) =>
                 dispatch(
-                  changeInput(input.name, { value: v.currentTarget.checked })
+                  changeInput(input.uuid, { value: v.currentTarget.checked })
                 )
               }
             />
