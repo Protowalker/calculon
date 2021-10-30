@@ -71,8 +71,7 @@ export function InputNames({ input }: { input: InputData }) {
         variant="h6"
         value={input.displayName}
         readOnly={!editMode}
-        inputProps={{ size: input.name.length }}
-      />
+      />{" "}
       {editMode && (
         <span>
           {"("}
@@ -81,10 +80,6 @@ export function InputNames({ input }: { input: InputData }) {
             variant="subtitle1"
             value={input.name}
             readOnly={!editMode}
-            inputProps={{
-              size: input.name.length,
-              style: { textAlign: "center" },
-            }}
           />
 
           {")"}

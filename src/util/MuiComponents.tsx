@@ -1,4 +1,4 @@
-import { InputBase, InputBaseProps } from "@mui/material";
+import { Box, InputBase, InputBaseProps } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Variant } from "@mui/material/styles/createTypography";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
@@ -43,10 +43,29 @@ export const TypographyInput = (
   props: InputBaseProps & { variant: Variant }
 ) => {
   const theme = useTheme();
+  const [widthRef, setWidthRef] = useState<HTMLElement>();
   return (
-    <InputBase
-      {...props}
-      sx={{ ...theme.typography[props.variant], ...props.sx }}
-    />
+    <>
+      <Box
+        component="span"
+        ref={(ref) => setWidthRef(ref as HTMLElement)}
+        sx={{
+          ...theme.typography[props.variant],
+          ...props.sx,
+          position: "absolute",
+          visibility: "hidden",
+        }}
+      >
+        {props.value as string}
+      </Box>
+      <InputBase
+        {...props}
+        sx={{
+          ...theme.typography[props.variant],
+          ...props.sx,
+          width: widthRef?.getBoundingClientRect().width,
+        }}
+      />
+    </>
   );
 };
