@@ -46,22 +46,6 @@ export default function TextOutput({
             readOnly={!editMode}
             inputProps={{ style: { textAlign: "right" } }}
           />{" "}
-          {editMode && (
-            <span>
-              {"("}
-
-              <TypographyInput
-                variant="subtitle1"
-                value={output.name}
-                inputProps={{
-                  size: output.name.length - 4,
-                  style: { textAlign: "center" },
-                }}
-              />
-
-              {")"}
-            </span>
-          )}
         </span>
         {editMode ? (
           <TextField

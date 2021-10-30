@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { TypographyInput } from "util/MuiComponents";
 import { selectEditMode } from "../../Store/EditMode";
 import { useAppSelector } from "../../Store/Hooks";
 import { InputData, removeInput } from "../../Store/Inputs";
@@ -58,5 +59,37 @@ export default function BaseInput(props: {
         </Box>
       ) : null}
     </Paper>
+  );
+}
+
+export function InputNames({ input }: { input: InputData }) {
+  const editMode = useAppSelector(selectEditMode);
+
+  return (
+    <span style={{ pointerEvents: editMode ? "auto" : "none" }}>
+      <TypographyInput
+        variant="h6"
+        value={input.displayName}
+        readOnly={!editMode}
+        inputProps={{ size: input.name.length }}
+      />
+      {editMode && (
+        <span>
+          {"("}
+
+          <TypographyInput
+            variant="subtitle1"
+            value={input.name}
+            readOnly={!editMode}
+            inputProps={{
+              size: input.name.length,
+              style: { textAlign: "center" },
+            }}
+          />
+
+          {")"}
+        </span>
+      )}
+    </span>
   );
 }

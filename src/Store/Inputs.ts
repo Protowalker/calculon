@@ -48,8 +48,16 @@ export const inputsSlice = createSlice({
       const payload = { ...action.payload };
       if (payload.name in state) return;
       // Generate a new name if empty
-      if (payload.name === "")
-        payload.name = payload.kind + Object.keys(state).length.toString();
+      if (payload.name === "") {
+        const nextNumber = Object.keys(state)
+          .filter((n) => n.startsWith(payload.kind))
+          .reduce((acc, v) => {
+            const number = parseInt(v.replace(/\D/g, ""));
+            if (!isNaN(number) && number > acc) return number;
+            else return acc;
+          }, -1);
+        payload.name = payload.kind + (nextNumber + 1).toString();
+      }
       // If order is -1, Push it to the end
       if (payload.order === -1) payload.order = Object.keys(state).length;
 

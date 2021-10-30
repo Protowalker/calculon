@@ -1,8 +1,11 @@
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Typography from "@mui/material/Typography";
-import BaseInput from "components/Inputs/BaseInput";
-import { useAppDispatch } from "../../Store/Hooks";
+import Box from "@mui/material/Box";
+
+import BaseInput, { InputNames } from "components/Inputs/BaseInput";
+import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
+import { selectEditMode } from "Store/EditMode";
 import { changeInput } from "../../Store/Inputs";
 
 export const ToggleInputData = Object.freeze({
@@ -23,21 +26,24 @@ export default function ToggleInput({
   input: typeof ToggleInputData;
 }) {
   const dispatch = useAppDispatch();
+  const editMode = useAppSelector(selectEditMode);
   return (
     <BaseInput input={input}>
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={input.value}
-            onChange={(v) =>
-              dispatch(
-                changeInput({ ...input, value: v.currentTarget.checked })
-              )
-            }
-          />
-        }
-        label={<Typography variant="h6">{input.displayName}</Typography>}
-      />
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={input.value}
+              onChange={(v) =>
+                dispatch(
+                  changeInput({ ...input, value: v.currentTarget.checked })
+                )
+              }
+            />
+          }
+          label={<InputNames input={input} />}
+        />
+      </Box>
     </BaseInput>
   );
 }

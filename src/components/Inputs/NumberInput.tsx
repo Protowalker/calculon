@@ -1,10 +1,11 @@
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAppDispatch } from "../../Store/Hooks";
 import { changeInput } from "../../Store/Inputs";
-import BaseInput from "components/Inputs/BaseInput";
+import BaseInput, { InputNames } from "components/Inputs/BaseInput";
 
 export const NumberInputData = Object.freeze({
   kind: "number" as const,
@@ -38,14 +39,16 @@ export default function NumberInput({
 
   return (
     <BaseInput input={input}>
-      <Typography variant="h6">{input.displayName}</Typography>
-      <TextField
-        size="small"
-        placeholder="Input Value"
-        value={textValue}
-        type="number"
-        onChange={(v: any) => updateValue(v.currentTarget.value)}
-      ></TextField>
+      <Box sx={{ display: "flex", flexDirection: "column" }}>
+        <InputNames input={input} />
+        <TextField
+          size="small"
+          placeholder="Input Value"
+          value={textValue}
+          type="number"
+          onChange={(v: any) => updateValue(v.currentTarget.value)}
+        ></TextField>
+      </Box>
     </BaseInput>
   );
 }
