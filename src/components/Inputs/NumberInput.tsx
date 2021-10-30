@@ -1,12 +1,8 @@
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Flex, Input } from "@chakra-ui/react";
+import BaseInput, { InputNames } from "components/Inputs/BaseInput";
+import { useCallback, useEffect, useState } from "react";
 import { useAppDispatch } from "../../Store/Hooks";
 import { changeInput } from "../../Store/Inputs";
-import BaseInput, { InputNames } from "components/Inputs/BaseInput";
-import { nanoid } from "@reduxjs/toolkit";
 
 export const NumberInputData = Object.freeze({
   kind: "number" as const,
@@ -41,16 +37,16 @@ export default function NumberInput({
 
   return (
     <BaseInput input={input}>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Flex direction="column">
         <InputNames input={input} />
-        <TextField
+        <Input
           size="small"
           placeholder="Input Value"
           value={textValue}
           type="number"
-          onChange={(v: any) => updateValue(v.currentTarget.value)}
-        ></TextField>
-      </Box>
+          onChange={(v) => updateValue(v.currentTarget.value)}
+        />
+      </Flex>
     </BaseInput>
   );
 }

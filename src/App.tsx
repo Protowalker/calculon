@@ -1,14 +1,13 @@
 import React from "react";
 import "./App.css";
 import { CalcFrame } from "./components/CalcFrame";
-import CssBaseline from "@mui/material/CssBaseline";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function App() {
   return (
-    <>
-      <CssBaseline />
+    <ChakraProvider>
       <CalcFrame />
-    </>
+    </ChakraProvider>
   );
 }
 

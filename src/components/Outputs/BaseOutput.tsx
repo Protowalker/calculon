@@ -1,12 +1,10 @@
-import { Box, IconButton, Paper } from "@mui/material";
 import { OutputData, removeOutput } from "Store/Outputs";
-import DeleteIcon from "@mui/icons-material/Delete";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import SettingsIcon from "@mui/icons-material/Settings";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { selectEditMode } from "../../Store/EditMode";
 import { useAppSelector } from "../../Store/Hooks";
+import { Box, HStack, IconButton } from "@chakra-ui/react";
+import { DeleteIcon, SettingsIcon } from "@chakra-ui/icons";
 
 export default function BaseOutput({
   output,
@@ -21,10 +19,10 @@ export default function BaseOutput({
 
   const [deleteConfOpen, setDeleteConfOpen] = useState(false);
   return (
-    <Paper
+    <HStack
+      boxShadow="md"
       sx={{
         p: "0.5rem",
-        display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         textAlign: "right",
@@ -32,10 +30,9 @@ export default function BaseOutput({
     >
       {editMode ? (
         <Box sx={{ justifyContent: "end", alignItems: "center" }}>
-          <IconButton>
-            <SettingsIcon />
-          </IconButton>
+          <IconButton aria-label="Settings" icon={<SettingsIcon />} />
           <IconButton
+            aria-label="Delete"
             color={deleteConfOpen ? "error" : "default"}
             onClick={() => {
               if (deleteConfOpen) {
@@ -46,12 +43,11 @@ export default function BaseOutput({
               }
             }}
             onBlur={() => setDeleteConfOpen(false)}
-          >
-            {deleteConfOpen ? <DeleteOutlineIcon /> : <DeleteIcon />}
-          </IconButton>
+            icon={<DeleteIcon />}
+          />
         </Box>
       ) : null}
       <Box sx={{ ml: "auto" }}>{children}</Box>
-    </Paper>
+    </HStack>
   );
 }

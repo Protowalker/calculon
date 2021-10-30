@@ -1,13 +1,7 @@
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-
+import { Checkbox, Flex } from "@chakra-ui/react";
 import BaseInput, { InputNames } from "components/Inputs/BaseInput";
-import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import { selectEditMode } from "Store/EditMode";
+import { useAppDispatch } from "../../Store/Hooks";
 import { changeInput } from "../../Store/Inputs";
-import { nanoid } from "@reduxjs/toolkit";
 
 export const ToggleInputData = Object.freeze({
   kind: "toggle" as const,
@@ -28,24 +22,20 @@ export default function ToggleInput({
   input: typeof ToggleInputData;
 }) {
   const dispatch = useAppDispatch();
-  const editMode = useAppSelector(selectEditMode);
   return (
     <BaseInput input={input}>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={input.value}
-              onChange={(v) =>
-                dispatch(
-                  changeInput(input.uuid, { value: v.currentTarget.checked })
-                )
-              }
-            />
+      <Flex direction="column">
+        <Checkbox
+          checked={input.value}
+          onChange={(v) =>
+            dispatch(
+              changeInput(input.uuid, { value: v.currentTarget.checked })
+            )
           }
-          label={<InputNames input={input} />}
-        />
-      </Box>
+        >
+          <InputNames input={input} />
+        </Checkbox>
+      </Flex>
     </BaseInput>
   );
 }

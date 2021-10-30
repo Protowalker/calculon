@@ -1,10 +1,15 @@
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid/Grid";
-import Switch from "@mui/material/Switch";
-
+import {
+  Box,
+  Text,
+  Button,
+  Center,
+  Flex,
+  Grid,
+  SimpleGrid,
+  Switch,
+  Wrap,
+  VStack,
+} from "@chakra-ui/react";
 import { useCallback } from "react";
 import { selectEditMode, toggleEditMode } from "../Store/EditMode";
 import { useAppDispatch, useAppSelector } from "../Store/Hooks";
@@ -28,15 +33,15 @@ export function CalcFrame() {
     >
       <LeftEditBar />
       <Box sx={{ display: "flex", flexGrow: 1 }}>
-        <Grid
-          container
+        <Flex
+          width="100%"
           m="10px"
           justifyContent="space-between"
           alignItems="start"
         >
           <CalcInput />
           <CalcOutput />
-        </Grid>
+        </Flex>
       </Box>
       <RightEditBar />
     </Box>
@@ -53,34 +58,34 @@ function LeftEditBar() {
     [dispatch]
   );
   return (
-    <Paper
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "stretch",
-        width: "min-content",
-        height: editMode ? "100%" : "4rem",
-      }}
+    <VStack
+      alignItems="stretch"
+      width="max-content"
+      maxWidth="6rem"
+      boxShadow="lg"
+      minWidth="4rem"
+      height={editMode ? "100%" : "4rem"}
     >
-      <Container>
+      <Center>
         <Switch
-          sx={{ mt: "0.75rem" }}
-          value={editMode}
-          onClick={() => dispatch(toggleEditMode())}
+          sx={{ mt: "1.5rem", maxWidth: "min-content" }}
+          isChecked={editMode}
+          onChange={() => dispatch(toggleEditMode())}
         />
-      </Container>
+      </Center>
       {editMode &&
         typedObjectKeys(InputComponentMap).map((input) => (
           <Button
-            sx={{ px: 1, mx: 0.4, my: 0.2, aspectRatio: "1.25" }}
-            variant="contained"
+            variant="solid"
             key={input}
             onClick={() => requestAddInput(input)}
+            wordBreak="break-word"
+            whiteSpace="normal"
           >
-            Add {input}
+            <Text fontSize="sm">Add {input}</Text>
           </Button>
         ))}
-    </Paper>
+    </VStack>
   );
 }
 
@@ -94,25 +99,24 @@ function RightEditBar() {
     [dispatch]
   );
   return (
-    <Paper
-      sx={{
-        display: editMode ? "flex" : "none",
-        flexDirection: "column",
-        alignItems: "stretch",
-        width: "min-content",
-        height: "100%",
-      }}
+    <VStack
+      boxShadow="lg"
+      display={editMode ? "flex" : "none"}
+      alignItems="stretch"
+      width="min-content"
+      height="100%"
     >
       {typedObjectKeys(OutputComponentMap).map((output) => (
         <Button
-          sx={{ px: 1, mx: 0.4, my: 0.2, aspectRatio: "1.25" }}
-          variant="contained"
+          variant="solid"
+          mx={0.4}
+          my={0.2}
           key={output}
           onClick={() => requestAddOutput(output)}
         >
-          Add {output}
+          <Text fontSize="sm">Add {output}</Text>
         </Button>
       ))}
-    </Paper>
+    </VStack>
   );
 }

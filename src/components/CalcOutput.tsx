@@ -1,4 +1,4 @@
-import Stack from "@mui/material/Stack";
+import { Stack } from "@chakra-ui/react";
 import { useAppSelector } from "Store/Hooks";
 import { selectOutputs } from "Store/Outputs";
 import { OutputFromData } from "./Outputs/Output";

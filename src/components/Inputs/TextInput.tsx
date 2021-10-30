@@ -1,12 +1,7 @@
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
-import { changeInput } from "../../Store/Inputs";
+import { Flex, Input } from "@chakra-ui/react";
 import BaseInput, { InputNames } from "components/Inputs/BaseInput";
-import { TypographyInput } from "util/MuiComponents";
-import { selectEditMode } from "Store/EditMode";
-import { Box } from "@mui/material";
-import { nanoid } from "@reduxjs/toolkit";
+import { useAppDispatch } from "../../Store/Hooks";
+import { changeInput } from "../../Store/Inputs";
 
 export const TextInputData = Object.freeze({
   kind: "text" as const,
@@ -22,17 +17,17 @@ export default function TextInput({ input }: { input: typeof TextInputData }) {
 
   return (
     <BaseInput input={input}>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Flex direction="column">
         <InputNames input={input} />
-        <TextField
+        <Input
           size="small"
           placeholder="Input Value"
           value={input.value}
-          onChange={(v: any) =>
+          onChange={(v) =>
             dispatch(changeInput(input.uuid, { value: v.target.value }))
           }
-        ></TextField>
-      </Box>
+        />
+      </Flex>
     </BaseInput>
   );
 }

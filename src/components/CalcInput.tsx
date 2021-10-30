@@ -1,6 +1,5 @@
-import Stack from "@mui/material/Stack";
-import { selectEditMode } from "../Store/EditMode";
-import { useAppDispatch, useAppSelector } from "../Store/Hooks";
+import { Stack } from "@chakra-ui/react";
+import { useAppSelector } from "../Store/Hooks";
 import { selectInputs } from "../Store/Inputs";
 import { InputFromData } from "./Inputs/Input";
 
@@ -10,9 +9,6 @@ export function CalcInput() {
       .slice()
       .sort((a, b) => a.order - b.order)
   );
-
-  const dispatch = useAppDispatch();
-  const editMode = useAppSelector(selectEditMode);
 
   return (
     <Stack spacing={1}>

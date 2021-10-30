@@ -1,16 +1,13 @@
-import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import { useMemo, useState } from "react";
+import { Flex, Input, Text, Textarea } from "@chakra-ui/react";
+import _ from "lodash";
+import { useMemo } from "react";
 import { selectEditMode } from "Store/EditMode";
 import { useAppDispatch, useAppSelector } from "Store/Hooks";
 import { selectInputs } from "Store/Inputs";
-import { parseExpressionString } from "./Output";
-import _ from "lodash";
 import { changeOutput } from "Store/Outputs";
+import { TypographyInput } from "util/CustomComponents";
 import BaseOutput from "./BaseOutput";
-import { HiddenTextField, TypographyInput } from "util/MuiComponents";
-import Box from "@mui/material/Box";
+import { parseExpressionString } from "./Output";
 
 export const TextOutputData = Object.freeze({
   kind: "text" as const,
@@ -41,37 +38,40 @@ export default function TextOutput({
 
   return (
     <BaseOutput output={output}>
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Flex direction="column">
         <span>
           <TypographyInput
-            variant="h6"
+            fontSize="xl"
             value={output.displayName}
-            readOnly={!editMode}
-            onChange={(v: any) =>
+            isReadOnly={!editMode}
+            onChange={(v) =>
               dispatch(
                 changeOutput(output.uuid, {
                   displayName: v.currentTarget.value,
                 })
               )
             }
-            inputProps={{ style: { textAlign: "right" } }}
+            sx={{ textAlign: "right" }}
           />{" "}
         </span>
         {editMode ? (
-          <TextField
+          <Textarea
             value={output.value}
-            onChange={(v: any) => {
+            onChange={(v) => {
               dispatch(
                 changeOutput(output.uuid, { value: v.currentTarget.value })
               );
             }}
-            inputProps={{ size: output.value.length }}
-            multiline
+            isFullWidth
+            width={output.value.length.toString() + "ch"}
+            minWidth="30ch"
+            maxWidth="80ch"
+            overflowWrap="break-word"
           />
         ) : (
-          <Typography>{text}</Typography>
+          <Text>{text}</Text>
         )}
-      </Box>
+      </Flex>
     </BaseOutput>
   );
 }

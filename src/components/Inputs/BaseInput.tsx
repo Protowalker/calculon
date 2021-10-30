@@ -1,12 +1,8 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import SettingsIcon from "@mui/icons-material/Settings";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Paper from "@mui/material/Paper";
+import { DeleteIcon, SettingsIcon } from "@chakra-ui/icons";
+import { Box, HStack, IconButton } from "@chakra-ui/react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { TypographyInput } from "util/MuiComponents";
+import { TypographyInput } from "util/CustomComponents";
 import { selectEditMode } from "../../Store/EditMode";
 import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
 import { changeInput, InputData, removeInput } from "../../Store/Inputs";
@@ -28,10 +24,10 @@ export default function BaseInput(props: {
   const [deleteConfOpen, setDeleteConfOpen] = useState(false);
 
   return (
-    <Paper
+    <HStack
+      boxShadow="md"
       sx={{
         p: "0.5rem",
-        display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
       }}
@@ -39,11 +35,14 @@ export default function BaseInput(props: {
       <Box>{props.children}</Box>
       {editMode ? (
         <Box sx={{ justifyItems: "end", alignItems: "center" }}>
-          <IconButton>
-            <SettingsIcon />
-          </IconButton>
           <IconButton
-            color={deleteConfOpen ? "error" : "default"}
+            variant="ghost"
+            aria-label="Settings"
+            icon={<SettingsIcon />}
+          />
+          <IconButton
+            variant="ghost"
+            aria-label="Delete"
             onClick={() => {
               if (deleteConfOpen) {
                 dispatch(removeInput(props.input.uuid));
@@ -53,12 +52,11 @@ export default function BaseInput(props: {
               }
             }}
             onBlur={() => setDeleteConfOpen(false)}
-          >
-            {deleteConfOpen ? <DeleteOutlineIcon /> : <DeleteIcon />}
-          </IconButton>
+            icon={<DeleteIcon color={deleteConfOpen ? "red" : "default"} />}
+          />
         </Box>
       ) : null}
-    </Paper>
+    </HStack>
   );
 }
 
@@ -69,26 +67,26 @@ export function InputNames({ input }: { input: InputData }) {
   return (
     <span style={{ pointerEvents: editMode ? "auto" : "none" }}>
       <TypographyInput
-        variant="h6"
+        fontSize="lg"
         value={input.displayName}
         onChange={(v) =>
           dispatch(
             changeInput(input.uuid, { displayName: v.currentTarget.value })
           )
         }
-        readOnly={!editMode}
+        isReadOnly={!editMode}
       />{" "}
       {editMode && (
         <span>
           {"("}
 
           <TypographyInput
-            variant="subtitle1"
+            fontSize="subtitle1"
             value={input.name}
             onChange={(v) =>
               dispatch(changeInput(input.uuid, { name: v.currentTarget.value }))
             }
-            readOnly={!editMode}
+            isReadOnly={!editMode}
           />
 
           {")"}
