@@ -68,11 +68,26 @@ export const inputsSlice = createSlice({
     removeInput: (state, action: PayloadAction<string>) => {
       delete state[action.payload];
     },
-    changeInput: (state, action: PayloadAction<InputData>) => {
-      // Don't allow invalid numbers
-      if (action.payload.kind === "number" && isNaN(action.payload.value))
-        return;
-      state[action.payload.name] = { ...action.payload };
+    changeInput: {
+      reducer: (
+        state,
+        action: PayloadAction<[string, Exclude<Partial<InputData>, ["kind"]>]>
+      ) => {
+        const [name, diff] = action.payload;
+        if (!(name in state)) return;
+        const data = { ...state[name] };
+        // Don't allow invalid numbers
+        if (diff.kind === "number" && diff.value && isNaN(diff.value)) return;
+        if (diff.name && name !== diff.name) {
+          delete state[name];
+          state[diff.name] = { ...data, ...diff } as any;
+          return;
+        }
+        state[name] = { ...data, ...diff } as any;
+      },
+      prepare: (name: string, diff: Exclude<Partial<InputData>, ["kind"]>) => {
+        return { payload: [name, diff] as [string, typeof diff] };
+      },
     },
   },
 });

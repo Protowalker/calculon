@@ -27,7 +27,7 @@ export default function TextInput({ input }: { input: typeof TextInputData }) {
           placeholder="Input Value"
           value={input.value}
           onChange={(v: any) =>
-            dispatch(changeInput({ ...input, value: v.target.value }))
+            dispatch(changeInput(input.name, { value: v.target.value }))
           }
         ></TextField>
       </Box>

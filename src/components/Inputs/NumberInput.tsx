@@ -32,7 +32,7 @@ export default function NumberInput({
   const updateValue = useCallback(
     (value: string) => {
       setTextValue(value);
-      dispatch(changeInput({ ...input, value: parseFloat(value) }));
+      dispatch(changeInput(input.name, { value: parseFloat(value) }));
     },
     [input, dispatch]
   );

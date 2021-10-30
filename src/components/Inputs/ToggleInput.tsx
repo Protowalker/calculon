@@ -36,7 +36,7 @@ export default function ToggleInput({
               checked={input.value}
               onChange={(v) =>
                 dispatch(
-                  changeInput({ ...input, value: v.currentTarget.checked })
+                  changeInput(input.name, { value: v.currentTarget.checked })
                 )
               }
             />

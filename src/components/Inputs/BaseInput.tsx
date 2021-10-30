@@ -8,8 +8,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { TypographyInput } from "util/MuiComponents";
 import { selectEditMode } from "../../Store/EditMode";
-import { useAppSelector } from "../../Store/Hooks";
-import { InputData, removeInput } from "../../Store/Inputs";
+import { useAppDispatch, useAppSelector } from "../../Store/Hooks";
+import { changeInput, InputData, removeInput } from "../../Store/Inputs";
 
 export type BaseInputData = {
   name: string;
@@ -64,12 +64,18 @@ export default function BaseInput(props: {
 
 export function InputNames({ input }: { input: InputData }) {
   const editMode = useAppSelector(selectEditMode);
+  const dispatch = useAppDispatch();
 
   return (
     <span style={{ pointerEvents: editMode ? "auto" : "none" }}>
       <TypographyInput
         variant="h6"
         value={input.displayName}
+        onChange={(v) =>
+          dispatch(
+            changeInput(input.name, { displayName: v.currentTarget.value })
+          )
+        }
         readOnly={!editMode}
       />{" "}
       {editMode && (

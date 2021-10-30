@@ -2,7 +2,13 @@ import { Box, InputBase, InputBaseProps } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Variant } from "@mui/material/styles/createTypography";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
-import React, { useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 export const HiddenTextField: React.FC<TextFieldProps> = (
   props: TextFieldProps
@@ -44,11 +50,19 @@ export const TypographyInput = (
 ) => {
   const theme = useTheme();
   const [widthRef, setWidthRef] = useState<HTMLElement>();
+  const [width, setWidth] = useState("10ch");
+  useEffect(() => {
+    setWidth(
+      widthRef?.getBoundingClientRect().width.toString() + "px" ??
+        (props.value as string)?.length
+    );
+  }, [widthRef, props.value]);
+
   return (
     <>
       <Box
         component="span"
-        ref={(ref) => setWidthRef(ref as HTMLElement)}
+        ref={(ref: HTMLElement) => setWidthRef(ref)}
         sx={{
           ...theme.typography[props.variant],
           ...props.sx,
@@ -63,7 +77,7 @@ export const TypographyInput = (
         sx={{
           ...theme.typography[props.variant],
           ...props.sx,
-          width: widthRef?.getBoundingClientRect().width,
+          width: width,
         }}
       />
     </>
