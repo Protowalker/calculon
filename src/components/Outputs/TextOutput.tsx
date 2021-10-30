@@ -1,4 +1,4 @@
-import { Flex, Input, Text, Textarea } from "@chakra-ui/react";
+import { Flex, Text, Textarea } from "@chakra-ui/react";
 import _ from "lodash";
 import { useMemo } from "react";
 import { selectEditMode } from "Store/EditMode";

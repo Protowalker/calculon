@@ -1,13 +1,10 @@
 import {
   Box,
-  Text,
   Button,
   Center,
   Flex,
-  Grid,
-  SimpleGrid,
   Switch,
-  Wrap,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import { useCallback } from "react";
