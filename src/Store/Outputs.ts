@@ -1,18 +1,25 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TextOutputData } from "components/Outputs/TextOutput";
+import { generateRecord, KeyedRecord } from "util/TypeUtils";
 import { RootState } from "./Store";
 
 export type OutputData = typeof TextOutputData;
 
-const initialState: Record<string, OutputData> = {
-  aTextOutput: {
-    kind: "text",
-    name: "aTextOutput",
-    displayName: "A Text Output",
-    order: 0,
-    value: "{{aTextInput}} {{aToggleInput}} is {{aNumberInput + 5}} years old.",
-  },
-};
+const initialState: KeyedRecord<"name", OutputData> = generateRecord<
+  "name",
+  OutputData
+>(
+  [
+    {
+      kind: "text",
+      name: "text0",
+      displayName: "Age Calculation",
+      order: 0,
+      value: "{{name}} {{tm ? '(TM)' : ''}} is {{prevAge + 5}} years old.",
+    },
+  ],
+  "name"
+);
 
 export const outputsSlice = createSlice({
   name: "Outputs",
@@ -20,7 +27,7 @@ export const outputsSlice = createSlice({
   reducers: {
     addOutput: (state, action: PayloadAction<OutputData>) => {
       const payload = { ...action.payload };
-      if (payload.name in state) {
+      if (payload.name in Object.keys(state)) {
         return;
       }
       // e.g. text5
@@ -50,7 +57,10 @@ export const outputsSlice = createSlice({
         action: PayloadAction<[string, Exclude<Partial<OutputData>, ["kind"]>]>
       ) => {
         const [name, diff] = action.payload;
-        if (!(name in state)) return;
+        if (!(name in Object.keys(state))) {
+          console.log(Object.keys(state));
+          return;
+        }
         const data = { ...state[name] };
 
         if (diff.name && name !== diff.name) {

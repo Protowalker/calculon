@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { generateRecord, KeyedRecord } from "util/TypeUtils";
 import { NumberInputData } from "../components/Inputs/NumberInput";
 import { TextInputData } from "../components/Inputs/TextInput";
 import { ToggleInputData } from "../components/Inputs/ToggleInput";
@@ -16,29 +17,34 @@ function loadFromLocalStorage(): Record<string, InputData> | undefined {
   return data as Record<string, InputData>;
 }
 
-const initialState: Record<string, InputData> = loadFromLocalStorage() ?? {
-  aTextInput: {
-    kind: "text",
-    name: "aTextInput",
-    displayName: "A Text Input",
-    value: "heyo",
-    order: 0,
-  },
-  aToggleInput: {
-    kind: "toggle",
-    name: "aToggleInput",
-    displayName: "A Toggle Input",
-    value: true,
-    order: 1,
-  },
-  aNumberInput: {
-    kind: "number",
-    name: "aNumberInput",
-    displayName: "A Number Input",
-    value: 10,
-    order: 2,
-  },
-};
+const initialState: KeyedRecord<"name", InputData> =
+  loadFromLocalStorage() ??
+  generateRecord<"name", InputData>(
+    [
+      {
+        kind: "text",
+        name: "name",
+        displayName: "Name",
+        value: "Jackie",
+        order: 0,
+      },
+      {
+        kind: "toggle",
+        name: "tm",
+        displayName: "Trademark?",
+        value: true,
+        order: 1,
+      },
+      {
+        kind: "number",
+        name: "prevAge",
+        displayName: "Age 5 years ago",
+        value: 10,
+        order: 2,
+      },
+    ],
+    "name"
+  );
 
 export const inputsSlice = createSlice({
   name: "Inputs",
