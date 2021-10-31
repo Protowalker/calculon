@@ -16,3 +16,21 @@ export function generateRecord<
     {} as KeyedRecord<K, V>
   );
 }
+
+//type DataClassType<
+//  T extends { [K in keyof T]: T[K] },
+//  Defaults extends keyof T
+//> = T & {
+//  new (args: Partial<T> & Omit<T, Defaults>): T;
+//};
+//
+//export function DataClass<
+//  T extends { [K in keyof T]: T[K] },
+//  Defaults extends keyof T
+//>(defaults?: Pick<T, Defaults>): DataClassType<T, Defaults> {
+//  return class {
+//    constructor(args: Partial<T> & Omit<T, Defaults>) {
+//      Object.assign(this, args);
+//    }
+//  } as DataClassType<T, Defaults>;
+//}
