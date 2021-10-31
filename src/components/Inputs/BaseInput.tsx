@@ -33,29 +33,30 @@ export default function BaseInput(props: {
       }}
     >
       <Box>{props.children}</Box>
-      {editMode ? (
-        <Box sx={{ justifyItems: "end", alignItems: "center" }}>
-          <IconButton
-            variant="ghost"
-            aria-label="Settings"
-            icon={<SettingsIcon />}
-          />
-          <IconButton
-            variant="ghost"
-            aria-label="Delete"
-            onClick={() => {
-              if (deleteConfOpen) {
-                dispatch(removeInput(props.input.uuid));
-                setDeleteConfOpen(false);
-              } else {
-                setDeleteConfOpen(true);
-              }
-            }}
-            onBlur={() => setDeleteConfOpen(false)}
-            icon={<DeleteIcon color={deleteConfOpen ? "red" : "default"} />}
-          />
-        </Box>
-      ) : null}
+      <HStack
+        sx={{ justifyItems: "end", alignItems: "center" }}
+        display={editMode ? undefined : "none"}
+      >
+        <IconButton
+          variant="outline"
+          aria-label="Settings"
+          icon={<SettingsIcon />}
+        />
+        <IconButton
+          variant="outline"
+          aria-label="Delete"
+          onClick={() => {
+            if (deleteConfOpen) {
+              dispatch(removeInput(props.input.uuid));
+              setDeleteConfOpen(false);
+            } else {
+              setDeleteConfOpen(true);
+            }
+          }}
+          onBlur={() => setDeleteConfOpen(false)}
+          icon={<DeleteIcon color={deleteConfOpen ? "red" : "default"} />}
+        />
+      </HStack>
     </HStack>
   );
 }

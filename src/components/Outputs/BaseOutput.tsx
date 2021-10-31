@@ -28,25 +28,28 @@ export default function BaseOutput({
         textAlign: "right",
       }}
     >
-      {editMode ? (
-        <Box sx={{ justifyContent: "end", alignItems: "center" }}>
-          <IconButton aria-label="Settings" icon={<SettingsIcon />} />
-          <IconButton
-            aria-label="Delete"
-            color={deleteConfOpen ? "error" : "default"}
-            onClick={() => {
-              if (deleteConfOpen) {
-                dispatch(removeOutput(output.uuid));
-                setDeleteConfOpen(false);
-              } else {
-                setDeleteConfOpen(true);
-              }
-            }}
-            onBlur={() => setDeleteConfOpen(false)}
-            icon={<DeleteIcon />}
-          />
-        </Box>
-      ) : null}
+      <HStack display={editMode ? "initial" : "none"}>
+        <IconButton
+          aria-label="Delete"
+          color={deleteConfOpen ? "red" : "default"}
+          variant="outline"
+          onClick={() => {
+            if (deleteConfOpen) {
+              dispatch(removeOutput(output.uuid));
+              setDeleteConfOpen(false);
+            } else {
+              setDeleteConfOpen(true);
+            }
+          }}
+          onBlur={() => setDeleteConfOpen(false)}
+          icon={<DeleteIcon />}
+        />
+        <IconButton
+          aria-label="Settings"
+          variant="outline"
+          icon={<SettingsIcon />}
+        />
+      </HStack>
       <Box sx={{ ml: "auto" }}>{children}</Box>
     </HStack>
   );
