@@ -2,7 +2,9 @@ import {
   Box,
   Button,
   Center,
+  Collapse,
   Flex,
+  Slide,
   Switch,
   Text,
   VStack,
@@ -20,14 +22,7 @@ import { OutputComponentMap, OutputDataMap } from "./Outputs/OutputMap";
 
 export function CalcFrame() {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "stretch",
-        justifyContent: "stretch",
-        height: "100vh",
-      }}
-    >
+    <Flex align="stretch" justify="stretch" h="100%">
       <LeftEditBar />
       <Box sx={{ display: "flex", flexGrow: 1 }}>
         <Flex
@@ -41,7 +36,7 @@ export function CalcFrame() {
         </Flex>
       </Box>
       <RightEditBar />
-    </Box>
+    </Flex>
   );
 }
 
@@ -54,35 +49,28 @@ function LeftEditBar() {
     },
     [dispatch]
   );
-  return (
+  return editMode ? (
     <VStack
       alignItems="stretch"
-      width="max-content"
+      width="100%"
       maxWidth="6rem"
       boxShadow="lg"
       minWidth="4rem"
-      height={editMode ? "100%" : "4rem"}
     >
-      <Center>
-        <Switch
-          sx={{ mt: "1.5rem", maxWidth: "min-content" }}
-          isChecked={editMode}
-          onChange={() => dispatch(toggleEditMode())}
-        />
-      </Center>
-      {editMode &&
-        typedObjectKeys(InputComponentMap).map((input) => (
-          <Button
-            variant="solid"
-            key={input}
-            onClick={() => requestAddInput(input)}
-            wordBreak="break-word"
-            whiteSpace="normal"
-          >
-            <Text fontSize="sm">Add {input}</Text>
-          </Button>
-        ))}
+      {typedObjectKeys(InputComponentMap).map((input) => (
+        <Button
+          variant="solid"
+          key={input}
+          onClick={() => requestAddInput(input)}
+          wordBreak="break-word"
+          whiteSpace="normal"
+        >
+          <Text fontSize="sm">Add {input}</Text>
+        </Button>
+      ))}
     </VStack>
+  ) : (
+    <> </>
   );
 }
 
