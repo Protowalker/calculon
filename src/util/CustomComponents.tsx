@@ -1,4 +1,13 @@
-import { Input, InputProps, Text } from "@chakra-ui/react";
+import {
+  Box,
+  BoxProps,
+  Input,
+  InputProps,
+  StackProps,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 
 export const TypographyInput = (props: InputProps) => {
@@ -28,3 +37,6 @@ export const TypographyInput = (props: InputProps) => {
     </>
   );
 };
+
+export const MotionBox = motion<BoxProps>(Box);
+export const MotionVStack = motion<StackProps>(VStack);
