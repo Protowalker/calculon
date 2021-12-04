@@ -1,6 +1,7 @@
 import { Flex, Input } from "@chakra-ui/react";
 import BaseInput, { InputNames } from "components/Inputs/BaseInput";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
+import { useValidatedValue } from "util/Hooks";
 import { useAppDispatch } from "../../Store/Hooks";
 import { changeInput } from "../../Store/Inputs";
 
@@ -19,20 +20,20 @@ export default function NumberInput({
   input: typeof NumberInputData;
 }) {
   const dispatch = useAppDispatch();
+  const validator = useCallback(
+    (text: string) => isNaN(Number(text)) === false,
+    []
+  );
+  const onValid = useCallback(
+    (text: string) =>
+      dispatch(changeInput(input.uuid, { value: parseFloat(text) })),
+    [dispatch, input.uuid]
+  );
 
-  const [textValue, setTextValue] = useState(input.value.toString());
-
-  // If input value changes, update text value
-  useEffect(() => {
-    setTextValue(input.value.toString());
-  }, [input.value]);
-
-  const updateValue = useCallback(
-    (value: string) => {
-      setTextValue(value);
-      dispatch(changeInput(input.uuid, { value: parseFloat(value) }));
-    },
-    [input, dispatch]
+  const [rawText, updateText, validText] = useValidatedValue(
+    validator,
+    input.value.toString(),
+    onValid
   );
 
   return (
@@ -42,9 +43,9 @@ export default function NumberInput({
         <Input
           size="small"
           placeholder="Input Value"
-          value={textValue}
-          type="number"
-          onChange={(v) => updateValue(v.currentTarget.value)}
+          value={rawText}
+          onChange={(v) => updateText(v.currentTarget.value)}
+          isInvalid={rawText !== validText}
         />
       </Flex>
     </BaseInput>

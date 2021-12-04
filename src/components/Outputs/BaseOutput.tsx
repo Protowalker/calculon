@@ -3,15 +3,17 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { selectEditMode } from "../../Store/EditMode";
 import { useAppSelector } from "../../Store/Hooks";
-import { Box, HStack, IconButton } from "@chakra-ui/react";
+import { Box, CSSObject, HStack, IconButton } from "@chakra-ui/react";
 import { DeleteIcon, SettingsIcon } from "@chakra-ui/icons";
 
 export default function BaseOutput({
   output,
   children,
+  sx,
 }: {
   output: OutputData;
   children: React.ReactNode;
+  sx?: CSSObject;
 }): React.ReactElement {
   const editMode = useAppSelector(selectEditMode);
 
@@ -50,7 +52,9 @@ export default function BaseOutput({
           icon={<SettingsIcon />}
         />
       </HStack>
-      <Box sx={{ ml: "auto" }}>{children}</Box>
+      <Box sx={{ ml: "auto", width: "100%", ...sx }} className="HERE">
+        {children}
+      </Box>
     </HStack>
   );
 }

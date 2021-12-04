@@ -1,9 +1,10 @@
 import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { HeaderOutputData } from "components/Outputs/HeaderOutput";
 import { TextOutputData } from "components/Outputs/TextOutput";
 import { generateRecord, KeyedRecord } from "util/TypeUtils";
 import { RootState } from "./Store";
 
-export type OutputData = typeof TextOutputData;
+export type OutputData = typeof TextOutputData | typeof HeaderOutputData;
 
 const initialState: KeyedRecord<"uuid", OutputData> = generateRecord<
   "uuid",

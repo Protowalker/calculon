@@ -26,6 +26,7 @@ export default function ToggleInput({
     <BaseInput input={input}>
       <Flex direction="column">
         <Checkbox
+          defaultChecked={input.value}
           checked={input.value}
           onChange={(v) =>
             dispatch(
