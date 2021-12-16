@@ -1,4 +1,10 @@
-import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSelector,
+  createSlice,
+  nanoid,
+  PayloadAction,
+} from "@reduxjs/toolkit";
+import _ from "lodash";
 import { generateRecord, KeyedRecord } from "util/TypeUtils";
 import { NumberInputData } from "../components/Inputs/NumberInput";
 import { TextInputData } from "../components/Inputs/TextInput";
@@ -17,7 +23,7 @@ function loadFromLocalStorage(): Record<string, InputData> | undefined {
   return data as Record<string, InputData>;
 }
 
-const initialState: KeyedRecord<"name", InputData> =
+const initialState: KeyedRecord<"uuid", InputData> =
   loadFromLocalStorage() ??
   generateRecord<"uuid", InputData>(
     [
@@ -105,10 +111,14 @@ export const inputsSlice = createSlice({
 
 export const { addInput, removeInput, changeInput } = inputsSlice.actions;
 
-export const selectInputNames = (state: RootState) => Object.keys(state.inputs);
 export const selectInputs = (state: RootState) => state.inputs;
+export const selectInputNames = createSelector(selectInputs, (inputs) =>
+  _.values(inputs).map((i) => i.name)
+);
 
-export const selectInput = (state: RootState, name: string) =>
-  state.inputs[name];
+export const selectInput = createSelector(
+  [selectInputs, (inputs, name: string) => name],
+  (inputs, name) => _.values(inputs).find((i) => i.name === name)
+);
 
 export const inputsReducer = inputsSlice.reducer;
