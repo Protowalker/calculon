@@ -1,4 +1,4 @@
-import { Flex, Text, Textarea } from "@chakra-ui/react";
+import { chakra, Flex, Text, Textarea } from "@chakra-ui/react";
 import _ from "lodash";
 import { useMemo } from "react";
 import { selectEditMode } from "Store/EditMode";
@@ -39,7 +39,7 @@ export default function TextOutput({
   return (
     <BaseOutput output={output}>
       <Flex direction="column">
-        <span>
+        <chakra.span>
           <TypographyInput
             fontSize="lg"
             fontWeight="bold"
@@ -54,7 +54,7 @@ export default function TextOutput({
             }
             sx={{ textAlign: "right" }}
           />{" "}
-        </span>
+        </chakra.span>
         <Textarea
           value={output.value}
           display={editMode ? "initial" : "none"}
@@ -63,7 +63,6 @@ export default function TextOutput({
               changeOutput(output.uuid, { value: v.currentTarget.value })
             );
           }}
-          isFullWidth
           width={output.value.length.toString() + "ch"}
           minWidth="30ch"
           maxWidth="80ch"

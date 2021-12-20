@@ -128,7 +128,7 @@ function InputVarName({ input }: { input: InputData }) {
   const textValid = rawText === validText;
 
   return (
-    <Tooltip isDisabled={textValid} label={error}>
+    <Tooltip isDisabled={textValid} label={error} hidden={textValid}>
       <chakra.span fontStyle="italic">
         {"("}
 

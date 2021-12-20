@@ -2,6 +2,13 @@ export function typedObjectKeys<T extends object>(obj: T): Array<keyof T> {
   return Object.keys(obj) as Array<keyof T>;
 }
 
+export function typedHasKey<T extends {}, K extends string | number | symbol>(
+  obj: T,
+  key: K
+): obj is T & Record<K, unknown> {
+  return obj.hasOwnProperty(key);
+}
+
 export type KeyedRecord<
   K extends keyof V,
   V extends { [Key in K]: string | number | symbol }

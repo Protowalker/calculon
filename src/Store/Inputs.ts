@@ -49,7 +49,7 @@ const initialState: KeyedRecord<"uuid", InputData> =
         displayName: "Age 5 years ago",
         value: 14,
         order: 2,
-        uuid: "1231b3n45v0xv=-",
+        uuid: "1231b3n45v",
       },
     ],
     "uuid"
@@ -62,7 +62,7 @@ export const inputsSlice = createSlice({
     addInput: (state, action: PayloadAction<InputData>) => {
       const payload = { ...action.payload };
       if (payload.uuid in state) return;
-      if (payload.uuid === "") payload.uuid = nanoid();
+      if (payload.uuid === "") payload.uuid = nanoid(12);
       // Generate a new name if empty
       if (payload.name === "") {
         const nextNumber = Object.keys(state)
