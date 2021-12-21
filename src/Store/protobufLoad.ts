@@ -3,6 +3,8 @@ import { typedHasKey } from "util/TypeUtils";
 import { InputData } from "./Inputs";
 import { OutputData } from "./Outputs";
 
+import * as base64 from "byte-base64";
+
 export const protocol = protobuf.load("/protocol/main.proto");
 
 type Kinds<T extends InputData | OutputData> = T extends {
@@ -45,7 +47,7 @@ export async function encodeStore(inputs: InputData[], outputs: OutputData[]) {
     outputs: outputs.map(outputToMessage).map(v => output.fromObject(v))
   };
   
-  const decoder = new TextDecoder('utf8');
-  return btoa(decoder.decode(calculator.encode(vals).finish()));
+  const data = calculator.encode(vals).finish()
+  return base64.bytesToBase64(data);
 }
 
