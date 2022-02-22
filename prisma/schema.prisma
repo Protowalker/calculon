@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// kind: "text",
+// name: "name",
+// displayName: "Name",
+// value: "Jackie",
+// order: 0,
+// uuid: "13874235bhv",
+
+// model Input {
+//   kind           String
+//   name           String
+//   displayName    String
+//   uuid           String     @id
+//   order          Int
+//   value          String
+//   calculator     Calculator @relation(fields: [calculatorSlug], references: [slug])
+//   calculatorSlug String
+// }
+
+// model Output {
+//   kind           String
+//   displayName    String
+//   name           String
+//   uuid           String     @id
+//   order          Int
+//   value          String
+//   calculator     Calculator @relation(fields: [calculatorSlug], references: [slug])
+//   calculatorSlug String
+// }
+
+model Calculator {
+  slug        String @id @unique
+  displayName String
+  inputs      String
+  outputs     String
+}
