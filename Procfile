@@ -1,1 +1,1 @@
-web: npx serve -s build
+web: npx remix-serve build
