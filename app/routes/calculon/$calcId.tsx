@@ -12,21 +12,23 @@ import AppBar from "~/components/AppBar";
 import { Grid, GridItem } from "@chakra-ui/react";
 import { db } from "~/util/db.server";
 import { generateRecord } from "~/util/TypeUtils";
+import { calcNameReducer } from "~/Store/CalculatorInfo";
 
 export const loader: LoaderFunction = async (
   args
-): Promise<Pick<RootState, "inputs" | "outputs">> => {
+): Promise<Pick<RootState, "inputs" | "outputs" | "calcName">> => {
   const data = await db.calculator.findFirst({
     where: { slug: args.params.calcId },
   });
 
   if (!data) {
     console.error("incorrect, TODO");
-    return { inputs: {}, outputs: {} };
+    return { inputs: {}, outputs: {}, calcName: "New calculator" };
   }
   return {
     inputs: generateRecord(JSON.parse(data?.inputs) as InputData[], "uuid"),
     outputs: generateRecord(JSON.parse(data?.outputs) as OutputData[], "uuid"),
+    calcName: data.displayName,
   };
 };
 
@@ -40,6 +42,7 @@ export default function Calculon() {
           inputs: inputsReducer,
           outputs: outputsReducer,
           editMode: editModeReducer,
+          calcName: calcNameReducer,
         },
         preloadedState: preloadedState,
       }),
@@ -49,8 +52,8 @@ export default function Calculon() {
 
   return (
     <Provider store={store}>
-      <Grid autoRows="1fr" height="100vh">
-        <GridItem rowSpan={2}>
+      <Grid autoRows="1fr" height="100%">
+        <GridItem rowSpan={2} minHeight="3rem">
           <AppBar />
         </GridItem>
         <GridItem rowSpan={28}>
