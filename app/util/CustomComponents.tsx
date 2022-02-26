@@ -37,6 +37,11 @@ export const TypographyInput = (props: InputProps) => {
         variant="unstyled"
         p={0}
         width={isServer ? `${(props.value as string).length + 3}ch` : width}
+        minWidth="1ch"
+        minHeight="1.6em"
+        outlineColor={
+          (props.value as string).length == 0 ? "gray.600" : "clear"
+        }
       />
     </>
   );
