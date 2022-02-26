@@ -18,10 +18,10 @@ import { KeyedRecord } from "~/util/TypeUtils";
 // TODO: save
 export const action: ActionFunction = async (args) => {
   const data = await args.request.formData();
-  invariant(data.get("slug"), "expected data.slug");
-  invariant(data.get("displayName"), "expected data.displayName");
-  invariant(data.get("inputs"), "expected data.inputs");
-  invariant(data.get("outputs"), "expected data.outputs");
+  invariant(data.get("slug") != null, "expected data.slug");
+  invariant(data.get("displayName") != null, "expected data.displayName");
+  invariant(data.get("inputs") != null, "expected data.inputs");
+  invariant(data.get("outputs") != null, "expected data.outputs");
 
   const parsed = {
     slug: data.get("slug")!.toString(),
