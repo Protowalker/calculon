@@ -36,7 +36,7 @@ export const TypographyInput = (props: InputProps) => {
         {...props}
         variant="unstyled"
         p={0}
-        width={isServer() ? `${(props.value as string).length + 3}ch` : width}
+        width={isServer ? `${(props.value as string).length + 3}ch` : width}
       />
     </>
   );
