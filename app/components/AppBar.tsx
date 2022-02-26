@@ -45,6 +45,7 @@ export default function AppBar() {
       templateColumns="repeat(20, 1fr)"
       alignItems="center"
       justifyContent="center"
+      padding="0.5em"
     >
       <GridItem colStart={1} colSpan={15}>
         <TypographyInput
