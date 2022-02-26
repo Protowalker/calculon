@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { isServer } from "./misc";
 
 export const TypographyInput = (props: InputProps) => {
   const [widthRef, setWidthRef] = useState<HTMLElement | null>(null);
@@ -31,7 +32,12 @@ export const TypographyInput = (props: InputProps) => {
       >
         {props.value as string}
       </Text>
-      <Input {...props} variant="unstyled" p={0} width={width} />
+      <Input
+        {...props}
+        variant="unstyled"
+        p={0}
+        width={isServer() ? `${(props.value as string).length + 3}ch` : width}
+      />
     </>
   );
 };
