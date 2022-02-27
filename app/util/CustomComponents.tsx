@@ -20,10 +20,13 @@ export const TypographyInput = (props: InputProps) => {
     else setWidth((props.value as string)?.length.toString() + "ch" ?? "20ch");
   }, [widthRef, props.value]);
 
+  const textProps = { ...props };
+  delete textProps.isReadOnly;
+
   return (
     <>
       <Text
-        {...props}
+        {...textProps}
         as="span"
         ref={(ref: HTMLElement | null) => setWidthRef(ref)}
         position="absolute"
