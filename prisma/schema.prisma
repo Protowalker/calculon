@@ -21,10 +21,13 @@ model User {
 }
 
 model Calculator {
-  slug        String @id @unique
+  uuid        String @id @unique @default(cuid())
+  slug        String
   displayName String
   inputs      String
   outputs     String
   author      User   @relation(fields: [authorUuid], references: [uuid])
   authorUuid  String
+
+  @@unique([authorUuid, slug])
 }

@@ -15,22 +15,22 @@ import { KeyedRecord } from "~/util/TypeUtils";
 //    }
 //};
 
-// TODO: save
 export const action: ActionFunction = async (args) => {
   const data = await args.request.formData();
+  // TODO: better validation
   invariant(data.get("slug") != null, "expected data.slug");
   invariant(data.get("displayName") != null, "expected data.displayName");
   invariant(data.get("inputs") != null, "expected data.inputs");
   invariant(data.get("outputs") != null, "expected data.outputs");
+  invariant(data.get("authorUsername") != null, "expected data.authorUsername");
 
-  const parsed = {
+  const validated = {
     slug: data.get("slug")!.toString(),
     displayName: data.get("displayName")!.toString(),
     inputs: data.get("inputs")!.toString(),
     outputs: data.get("outputs")!.toString(),
+    authorUsername: data.get("authorUsername")!.toString(),
   };
-
-  console.log(parsed);
 
   // TODO: Implement validity checking for inputs/outputs
   // TODO: Implement validity checking for slug
@@ -46,8 +46,20 @@ export const action: ActionFunction = async (args) => {
   //  outputs: { create: parsed.outputs },
   //};
 
+  const author = await db.user.findUnique({
+    where: { username: validated.authorUsername },
+  });
+  // TODO: Better validation of author (though in reasonable usage it's incredibly unlikely that this codepath will ever get hit)
+  invariant(author !== null, "Failed to find author with specified username");
+
+  const parsed = {
+    ...validated,
+    authorUsername: undefined,
+    authorUuid: author.uuid,
+  };
+
   const result = await db.calculator.upsert({
-    where: { slug: parsed.slug },
+    where: { authorUuid_slug: { authorUuid: author.uuid, slug: parsed.slug } },
     create: { ...parsed },
     update: { ...parsed },
   });

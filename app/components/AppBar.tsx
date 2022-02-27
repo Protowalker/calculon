@@ -29,6 +29,7 @@ export default function AppBar() {
   const outputs = useAppSelector((state) => _.values(selectOutputs(state)));
 
   const slug = useParams().calcId!;
+  const username = useParams().username!;
   const calcName = useAppSelector(selectCalcName);
   const theme = useTheme();
 
@@ -72,6 +73,7 @@ export default function AppBar() {
                     inputs: JSON.stringify(inputs),
                     outputs: JSON.stringify(outputs),
                     displayName: calcName,
+                    authorUsername: username,
                   },
                   {
                     method: "post",

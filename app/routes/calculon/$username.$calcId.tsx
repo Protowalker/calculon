@@ -18,7 +18,10 @@ export const loader: LoaderFunction = async (
   args
 ): Promise<Pick<RootState, "inputs" | "outputs" | "calcName">> => {
   const data = await db.calculator.findFirst({
-    where: { slug: args.params.calcId },
+    where: {
+      author: { username: args.params.username! },
+      slug: args.params.calcId!,
+    },
   });
 
   if (!data) {

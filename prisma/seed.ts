@@ -1,13 +1,28 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient, User } from "@prisma/client";
 const db = new PrismaClient();
 
 async function seed() {
-  await buildCalculator();
+  const user = await createAuthor();
+  await buildCalculator(user);
 }
 
 seed();
 
-async function buildCalculator() {
+async function createAuthor() {
+  return await db.user.upsert({
+    where: { username: "GreatHostCalculon" },
+    update: {},
+    create: {
+      email: "protowalkerofficial@gmail.com",
+      githubConnected: false,
+      googleConnected: false,
+      passwordHash: "abcd",
+      username: "GreatHostCalculon",
+    },
+  });
+}
+
+async function buildCalculator(author: User) {
   const inputs = [
     {
       kind: "text",
@@ -47,13 +62,16 @@ async function buildCalculator() {
   ];
 
   await db.calculator.upsert({
-    where: { slug: "first-calc-ever" },
+    where: {
+      authorUuid_slug: { authorUuid: author.uuid, slug: "first-calc-ever" },
+    },
     update: {},
     create: {
       slug: "first-calc-ever",
       displayName: "First Calculator Ever",
       inputs: JSON.stringify(inputs),
       outputs: JSON.stringify(outputs),
+      authorUuid: author.uuid,
     },
   });
 }
