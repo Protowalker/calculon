@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/react";
+import { Heading, Stack } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { selectOutputs } from "../Store/Outputs";
 import { useAppSelector } from "../Store/Hooks";
@@ -14,6 +14,14 @@ export function CalcInput() {
 
   return (
     <Stack spacing={1}>
+      <Heading
+        size="md"
+        textAlign="center"
+        color="gray.500"
+        textTransform="uppercase"
+      >
+        Inputs
+      </Heading>
       <Stack spacing={1}>
         {inputs.map((input) => (
           <InputFromData input={input} key={input.uuid} />
