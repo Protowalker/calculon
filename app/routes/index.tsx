@@ -1,11 +1,19 @@
-import { ChakraProvider } from "@chakra-ui/react";
-import { Link } from "remix";
+import { Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
 
 export default function Index() {
   return (
-    <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.4" }}>
-      <h1>Welcome to Remix</h1>
-      <Link to="/posts">Posts</Link>
-    </div>
+    <Grid templateRows="repeat(12,1fr)" templateColumns="repeat(12,1fr)">
+      <GridItem
+        rowSpan={2}
+        colSpan={12}
+        boxShadow="md"
+        p=".5em"
+        bgColor="purple.400"
+      >
+        <Flex justifyContent="center" alignItems="center">
+          <Heading color="white">CALCULON</Heading>
+        </Flex>
+      </GridItem>
+    </Grid>
   );
 }
