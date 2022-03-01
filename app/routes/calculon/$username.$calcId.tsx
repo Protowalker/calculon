@@ -1,5 +1,10 @@
 import { Provider } from "react-redux";
-import { ActionFunction, LoaderFunction, useLoaderData } from "remix";
+import {
+  ActionFunction,
+  LoaderFunction,
+  MetaFunction,
+  useLoaderData,
+} from "remix";
 import { CalcFrame } from "~/components/CalcFrame";
 
 import { configureStore } from "@reduxjs/toolkit";
@@ -13,6 +18,12 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import { db } from "~/util/db.server";
 import { generateRecord } from "~/util/TypeUtils";
 import { calcNameReducer } from "~/Store/CalculatorInfo";
+
+export const meta: MetaFunction = (args) => {
+  return {
+    title: `${args.data.calcName} by ${args.params.username}`,
+  };
+};
 
 export const loader: LoaderFunction = async (
   args

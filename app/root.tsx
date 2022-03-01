@@ -4,13 +4,13 @@ import {
   Meta,
   Outlet,
   Scripts,
-  ScrollRestoration
+  ScrollRestoration,
 } from "remix";
 import type { MetaFunction } from "remix";
 import { ChakraProvider } from "@chakra-ui/react";
 
 export const meta: MetaFunction = () => {
-  return { title: "New Remix App" };
+  return { title: "Home of Calculon" };
 };
 
 export default function App() {
