@@ -18,6 +18,7 @@ import { useAppDispatch, useAppSelector } from "~/Store/Hooks";
 import { selectInputs } from "~/Store/Inputs";
 import { selectOutputs } from "~/Store/Outputs";
 import { TypographyInput } from "~/util/CustomComponents";
+import HamburgerMenu from "./HamburgerMenu";
 
 const MotionButton = motion<ButtonProps>(Button);
 
@@ -48,7 +49,10 @@ export default function AppBar() {
       justifyContent="center"
       padding="0.5em"
     >
-      <GridItem colStart={1} colSpan={15}>
+      <GridItem>
+        <HamburgerMenu>asd</HamburgerMenu>
+      </GridItem>
+      <GridItem>
         <TypographyInput
           overflow="hidden"
           fontSize="3xl"
@@ -61,36 +65,31 @@ export default function AppBar() {
 
       {ownsThis ? (
         <>
-          {
-            // TODO: "Confirm without saving?"
-            editMode ? (
-              <GridItem colStart={-4} alignSelf="center">
-                <MotionButton
-                  bgColor="green.800"
-                  color="white"
-                  width="100%"
-                  onClick={() =>
-                    calcFetcher.submit(
-                      {
-                        slug: slug,
-                        inputs: JSON.stringify(inputs),
-                        outputs: JSON.stringify(outputs),
-                        displayName: calcName,
-                        authorUsername: username,
-                      },
-                      {
-                        method: "post",
-                        action: "/calculon/save",
-                        encType: "multipart/form-data",
-                      }
-                    )
+          <GridItem colStart={-4} alignSelf="center">
+            <MotionButton
+              bgColor="green.800"
+              color="white"
+              width="100%"
+              onClick={() =>
+                calcFetcher.submit(
+                  {
+                    slug: slug,
+                    inputs: JSON.stringify(inputs),
+                    outputs: JSON.stringify(outputs),
+                    displayName: calcName,
+                    authorUsername: username,
+                  },
+                  {
+                    method: "post",
+                    action: "/calculon/save",
+                    encType: "multipart/form-data",
                   }
-                >
-                  Save
-                </MotionButton>
-              </GridItem>
-            ) : null
-          }
+                )
+              }
+            >
+              Save
+            </MotionButton>
+          </GridItem>
           <GridItem colStart={-2} colSpan={1} alignSelf="center" mr={1}>
             <MotionButton
               width="100%"
