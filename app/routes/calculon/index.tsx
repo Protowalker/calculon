@@ -1,10 +1,42 @@
-import { LoaderFunction, redirect } from "remix";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Image,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/react";
+import { Calculator, Prisma, User } from "@prisma/client";
+import { Link, LoaderFunction, redirect, useLoaderData } from "remix";
+import { db } from "~/util/db.server";
 
 export const loader: LoaderFunction = async (args) => {
-  return redirect("/calculon/new");
+  const calculators = await db.calculator.findMany({
+    include: { author: true },
+  });
+  return calculators;
 };
 
 export default function Calculon() {
-  // TODO
-  return <></>;
+  const calculators = useLoaderData<(Calculator & { author: User })[]>();
+  return (
+    <SimpleGrid columns={6} spacing="10">
+      {calculators.map((v, i) => (
+        <GridItem
+          key={i}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          shadow="md"
+          bgColor="gray.50"
+        >
+          <Link to={`/calculon/${v.author.username}/${v.slug}`}>
+            {v.displayName}
+          </Link>
+          <Text color="gray.500"> by {v.author.username}</Text>
+        </GridItem>
+      ))}
+    </SimpleGrid>
+  );
 }

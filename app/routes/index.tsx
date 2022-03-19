@@ -1,4 +1,5 @@
 import { Flex, Grid, GridItem, Heading } from "@chakra-ui/react";
+import { Link } from "remix";
 
 export default function Index() {
   return (
@@ -13,6 +14,9 @@ export default function Index() {
         <Flex justifyContent="center" alignItems="center">
           <Heading color="white">CALCULON</Heading>
         </Flex>
+      </GridItem>
+      <GridItem rowSpan={1}>
+        <Link to="/calculon">Calculon</Link>
       </GridItem>
     </Grid>
   );
