@@ -22,6 +22,7 @@ export const TypographyInput = (props: InputProps) => {
 
   const textProps = { ...props };
   delete textProps.isReadOnly;
+  delete textProps.isInvalid;
 
   return (
     <>
