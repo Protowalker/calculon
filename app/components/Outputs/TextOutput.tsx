@@ -3,7 +3,7 @@ import _ from "lodash";
 import { useMemo } from "react";
 import { selectEditMode } from "~/Store/EditMode";
 import { useAppDispatch, useAppSelector } from "~/Store/Hooks";
-import { selectInputs } from "~/Store/Inputs";
+import { selectAllInputs } from "~/Store/Inputs";
 import { changeOutput } from "~/Store/Outputs";
 import { TypographyInput } from "~/util/CustomComponents";
 import BaseOutput from "./BaseOutput";
@@ -24,7 +24,7 @@ export default function TextOutput({
   output: typeof TextOutputData;
 }) {
   const inputs = useAppSelector((state) =>
-    _(selectInputs(state))
+    _(selectAllInputs(state))
       .mapKeys((input) => input.name)
       .mapValues((input) => input.value)
   ).value();

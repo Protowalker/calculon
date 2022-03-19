@@ -1,3 +1,4 @@
+import { StatHelpText } from "@chakra-ui/react";
 import {
   createSelector,
   createSlice,
@@ -16,13 +17,10 @@ export type InputData =
   | typeof ToggleInputData
   | typeof NumberInputData;
 
-
-const initialState: KeyedRecord<"uuid", InputData> =
-  generateRecord<"uuid", InputData>(
-    [
-    ],
-    "uuid"
-  );
+const initialState: KeyedRecord<"uuid", InputData> = generateRecord<
+  "uuid",
+  InputData
+>([], "uuid");
 
 export const inputsSlice = createSlice({
   name: "Inputs",
@@ -80,13 +78,31 @@ export const inputsSlice = createSlice({
 
 export const { addInput, removeInput, changeInput } = inputsSlice.actions;
 
-export const selectInputs = (state: RootState) => state.inputs;
-export const selectInputNames = createSelector(selectInputs, (inputs) =>
+export const selectAllInputs = (state: RootState) => state.inputs;
+
+export const selectInputSet = createSelector(
+  [selectAllInputs, (state: RootState, names: string[] | undefined) => names],
+  (inputs: RootState["inputs"], names: string[] | undefined) =>
+    typeof names === "undefined"
+      ? inputs
+      : _(inputs)
+          .pickBy((v) => names.includes(v.name))
+          .value(),
+  {
+    memoizeOptions: {
+      resultEqualityCheck: (prev, curr) => {
+        return JSON.stringify(prev) === JSON.stringify(curr);
+      },
+    },
+  }
+);
+
+export const selectInputNames = createSelector(selectAllInputs, (inputs) =>
   _.values(inputs).map((i) => i.name)
 );
 
 export const selectInput = createSelector(
-  [selectInputs, (inputs, name: string) => name],
+  [selectAllInputs, (state, inputs: RootState["inputs"], name: string) => name],
   (inputs, name) => _.values(inputs).find((i) => i.name === name)
 );
 

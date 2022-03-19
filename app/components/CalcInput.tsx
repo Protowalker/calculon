@@ -2,12 +2,12 @@ import { Heading, Stack } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { selectOutputs } from "../Store/Outputs";
 import { useAppSelector } from "../Store/Hooks";
-import { selectInputs } from "../Store/Inputs";
+import { selectAllInputs } from "../Store/Inputs";
 import { InputFromData } from "./Inputs/Input";
 
 export function CalcInput() {
   const inputs = useAppSelector((state) =>
-    Object.values(selectInputs(state))
+    Object.values(selectAllInputs(state))
       .slice()
       .sort((a, b) => a.order - b.order)
   );

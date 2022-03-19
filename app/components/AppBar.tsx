@@ -15,7 +15,7 @@ import { Form, useFetcher, useParams } from "remix";
 import { changeName, selectCalcName } from "~/Store/CalculatorInfo";
 import { selectEditMode, toggleEditMode } from "~/Store/EditMode";
 import { useAppDispatch, useAppSelector } from "~/Store/Hooks";
-import { selectInputs } from "~/Store/Inputs";
+import { selectAllInputs } from "~/Store/Inputs";
 import { selectOutputs } from "~/Store/Outputs";
 import { TypographyInput } from "~/util/CustomComponents";
 import HamburgerMenu from "./HamburgerMenu";
@@ -26,7 +26,7 @@ export default function AppBar() {
   const dispatch = useAppDispatch();
   const editMode = useAppSelector(selectEditMode);
 
-  const inputs = useAppSelector((state) => _.values(selectInputs(state)));
+  const inputs = useAppSelector((state) => _.values(selectAllInputs(state)));
   const outputs = useAppSelector((state) => _.values(selectOutputs(state)));
 
   const slug = useParams().calcId!;

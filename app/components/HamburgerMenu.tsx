@@ -9,11 +9,9 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Spacer,
   useDisclosure,
-  VStack,
 } from "@chakra-ui/react";
-import React, { useRef } from "react";
+import React from "react";
 
 export default function HamburgerMenu(props: { children: React.ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
