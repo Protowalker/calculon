@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { OutputData } from "~/Store/Outputs";
 import { OutputComponentMap } from "./OutputMap";
 
-const expressionRegex = /\{\{(.+?)\}\}/g;
+const expressionRegex = /\{\{(.+?)\}\}/gm;
 
 export function parseExpressionString(expr: string): {
   evaluate: (scope: Record<string, unknown>) => string;
