@@ -4,6 +4,8 @@ FROM node:18-slim
 COPY ./ ./home/app
 WORKDIR /home/app
 
+ENV NODE_ENV="production"
+
 
 RUN ls -l
 RUN npm install
