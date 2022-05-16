@@ -10,6 +10,7 @@ ENV SQLITE_URL="file:./dev.db"
 RUN ls -l
 RUN npm install
 RUN npm run build
+RUN npx prisma db push
 RUN npx prisma db seed
 
 ENV NODE_ENV="production"
