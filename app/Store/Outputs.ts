@@ -1,4 +1,5 @@
 import { createSlice, nanoid, PayloadAction } from "@reduxjs/toolkit";
+import { number } from "mathjs";
 import { HeaderOutputData } from "~/components/Outputs/HeaderOutput";
 import { TextOutputData } from "~/components/Outputs/TextOutput";
 import { generateRecord, KeyedRecord } from "~/util/TypeUtils";
@@ -9,11 +10,7 @@ export type OutputData = typeof TextOutputData | typeof HeaderOutputData;
 const initialState: KeyedRecord<"uuid", OutputData> = generateRecord<
   "uuid",
   OutputData
->(
-  [
-  ],
-  "uuid"
-);
+>([], "uuid");
 
 export const outputsSlice = createSlice({
   name: "Outputs",
@@ -46,6 +43,22 @@ export const outputsSlice = createSlice({
     removeOutput: (state, action: PayloadAction<string>) => {
       delete state[action.payload];
     },
+    moveOutput: (
+      state,
+      action: PayloadAction<{ previousIndex: number; newIndex: number }>
+    ) => {
+      const { previousIndex, newIndex } = action.payload;
+      const outputs = Object.values({ ...state }).sort(
+        (a, b) => a.order - b.order
+      );
+      const [removed] = outputs.splice(previousIndex, 1);
+      outputs.splice(newIndex, 0, removed);
+      for (const [output, i] of outputs.map(
+        (v, i) => [v, i] as [typeof v, number]
+      )) {
+        state[output.uuid] = { ...output, order: i };
+      }
+    },
     changeOutput: {
       reducer: (
         state,
@@ -73,6 +86,7 @@ export const outputsSlice = createSlice({
   },
 });
 
-export const { addOutput, removeOutput, changeOutput } = outputsSlice.actions;
+export const { addOutput, removeOutput, changeOutput, moveOutput } =
+  outputsSlice.actions;
 export const selectOutputs = (state: RootState) => state.outputs;
 export const outputsReducer = outputsSlice.reducer;

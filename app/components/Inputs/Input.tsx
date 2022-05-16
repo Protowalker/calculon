@@ -14,5 +14,7 @@ export function InputFromData({
   input: InputData;
 }): React.ReactElement {
   // super disgusting, but the index narrows the type of the function.
-  return InputComponentMap[input.kind]({ input: input as never });
+  const InputComponent = InputComponentMap[input.kind];
+
+  return <InputComponent input={input as never} />;
 }

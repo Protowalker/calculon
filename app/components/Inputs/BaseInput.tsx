@@ -1,6 +1,14 @@
-import { DeleteIcon, SettingsIcon } from "@chakra-ui/icons";
-import { Box, chakra, HStack, IconButton, Tooltip } from "@chakra-ui/react";
+import { DeleteIcon, DragHandleIcon, SettingsIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  chakra,
+  HStack,
+  Icon,
+  IconButton,
+  Tooltip,
+} from "@chakra-ui/react";
 import { useCallback, useState } from "react";
+import { Draggable } from "react-beautiful-dnd";
 import { useDispatch } from "react-redux";
 import { TypographyInput } from "~/util/CustomComponents";
 import { useValidatedValue, Validator } from "~/util/Hooks";
@@ -30,40 +38,52 @@ export default function BaseInput(props: {
   const [deleteConfOpen, setDeleteConfOpen] = useState(false);
 
   return (
-    <HStack
-      boxShadow="md"
-      sx={{
-        p: "0.5rem",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <Box>{props.children}</Box>
-      <HStack
-        sx={{ justifyItems: "end", alignItems: "center" }}
-        display={editMode ? undefined : "none"}
-      >
-        <IconButton
-          variant="outline"
-          aria-label="Settings"
-          icon={<SettingsIcon />}
-        />
-        <IconButton
-          variant="outline"
-          aria-label="Delete"
-          onClick={() => {
-            if (deleteConfOpen) {
-              dispatch(removeInput(props.input.uuid));
-              setDeleteConfOpen(false);
-            } else {
-              setDeleteConfOpen(true);
-            }
+    <Draggable draggableId={props.input.uuid} index={props.input.order}>
+      {(provided, snapshot) => (
+        <HStack
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          boxShadow="md"
+          sx={{
+            p: "0.5rem",
+            justifyContent: "space-between",
+            alignItems: "center",
           }}
-          onBlur={() => setDeleteConfOpen(false)}
-          icon={<DeleteIcon color={deleteConfOpen ? "red" : "default"} />}
-        />
-      </HStack>
-    </HStack>
+        >
+          <Box>{props.children}</Box>
+          <HStack
+            sx={{ justifyItems: "end", alignItems: "center" }}
+            display={editMode ? undefined : "none"}
+          >
+            <IconButton
+              variant="outline"
+              aria-label="Settings"
+              icon={<SettingsIcon />}
+            />
+            <IconButton
+              variant="outline"
+              aria-label="Delete"
+              onClick={() => {
+                if (deleteConfOpen) {
+                  dispatch(removeInput(props.input.uuid));
+                  setDeleteConfOpen(false);
+                } else {
+                  setDeleteConfOpen(true);
+                }
+              }}
+              onBlur={() => setDeleteConfOpen(false)}
+              icon={<DeleteIcon color={deleteConfOpen ? "red" : "default"} />}
+            />
+          </HStack>
+          <Box
+            {...provided.dragHandleProps}
+            display={editMode ? "auto" : "none"}
+          >
+            <DragHandleIcon />
+          </Box>
+        </HStack>
+      )}
+    </Draggable>
   );
 }
 

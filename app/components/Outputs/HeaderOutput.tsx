@@ -15,7 +15,7 @@ export const HeaderOutputData = Object.freeze({
   displayName: "A Header",
   uuid: "",
   order: -1,
-  value: undefined,
+  value: "A Header",
 });
 
 export default function HeaderOutput({
@@ -33,7 +33,7 @@ export default function HeaderOutput({
   const dispatch = useAppDispatch();
 
   const text = useMemo(
-    () => parseExpressionString(output.displayName).evaluate(inputs),
+    () => parseExpressionString(output.value).evaluate(inputs),
     [inputs, output.value]
   );
 
@@ -42,12 +42,12 @@ export default function HeaderOutput({
       <TypographyInput
         fontSize="lg"
         fontWeight="bold"
-        value={editMode ? output.displayName : text}
+        value={editMode ? output.value : text}
         isReadOnly={!editMode}
         onChange={(v) =>
           dispatch(
             changeOutput(output.uuid, {
-              displayName: v.currentTarget.value,
+              value: v.currentTarget.value,
             })
           )
         }

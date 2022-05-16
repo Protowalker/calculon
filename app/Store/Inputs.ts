@@ -6,6 +6,7 @@ import {
   PayloadAction,
 } from "@reduxjs/toolkit";
 import _ from "lodash";
+import { InputDataMap } from "~/components/Inputs/InputMap";
 import { generateRecord, KeyedRecord } from "~/util/TypeUtils";
 import { NumberInputData } from "../components/Inputs/NumberInput";
 import { TextInputData } from "../components/Inputs/TextInput";
@@ -46,10 +47,34 @@ export const inputsSlice = createSlice({
 
       payload.order = Math.min(payload.order, Object.keys(state).length);
 
+      let count = 0;
+      for (const input of Object.values(state).sort(
+        (a, b) => a.order - b.order
+      )) {
+        state[input.uuid] = { ...input, order: count };
+        count += 1;
+      }
+
       state[payload.uuid] = payload;
     },
     removeInput: (state, action: PayloadAction<string>) => {
       delete state[action.payload];
+    },
+    moveInput: (
+      state,
+      action: PayloadAction<{ previousIndex: number; newIndex: number }>
+    ) => {
+      const { previousIndex, newIndex } = action.payload;
+      const inputs = Object.values({ ...state }).sort(
+        (a, b) => a.order - b.order
+      );
+      const [removed] = inputs.splice(previousIndex, 1);
+      inputs.splice(newIndex, 0, removed);
+      for (const [input, i] of inputs.map(
+        (v, i) => [v, i] as [typeof v, number]
+      )) {
+        state[input.uuid] = { ...input, order: i };
+      }
     },
     changeInput: {
       reducer: (
@@ -64,6 +89,16 @@ export const inputsSlice = createSlice({
         // Don't allow invalid numbers
         if (data.kind === "number" && diff.value && isNaN(diff.value as number))
           return;
+
+        const inputs = Object.values(state)
+          .sort((a, b) => a.order - b.order)
+          .map((v, i) => ({ ...v, order: i }));
+
+        for (const input of inputs) {
+          console.log(input);
+          state[input.uuid] = { ...input };
+        }
+
         state[uuid] = { ...data, ...diff } as any;
       },
       prepare: (
@@ -76,7 +111,8 @@ export const inputsSlice = createSlice({
   },
 });
 
-export const { addInput, removeInput, changeInput } = inputsSlice.actions;
+export const { addInput, removeInput, changeInput, moveInput } =
+  inputsSlice.actions;
 
 export const selectAllInputs = (state: RootState) => state.inputs;
 
@@ -102,7 +138,7 @@ export const selectInputNames = createSelector(selectAllInputs, (inputs) =>
 );
 
 export const selectInput = createSelector(
-  [selectAllInputs, (state, inputs: RootState["inputs"], name: string) => name],
+  [selectAllInputs, (state, name: string) => name],
   (inputs, name) => _.values(inputs).find((i) => i.name === name)
 );
 
