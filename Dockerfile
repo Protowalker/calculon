@@ -9,6 +9,7 @@ WORKDIR /home/app
 RUN ls -l
 RUN npm install
 RUN npm run build
+RUN npx prisma db seed
 
 ENV NODE_ENV="production"
 
