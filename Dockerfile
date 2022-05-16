@@ -5,6 +5,7 @@ COPY ./ ./home/app
 WORKDIR /home/app
 
 
+ENV SQLITE_URL="file:./dev.db"
 
 RUN ls -l
 RUN npm install
