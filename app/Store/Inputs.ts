@@ -33,10 +33,10 @@ export const inputsSlice = createSlice({
       if (payload.uuid === "") payload.uuid = nanoid(12);
       // Generate a new name if empty
       if (payload.name === "") {
-        const nextNumber = Object.keys(state)
-          .filter((n) => n.startsWith(payload.kind))
+        const nextNumber = Object.values(state)
+          .filter((n) => n.name.startsWith(payload.kind))
           .reduce((acc, v) => {
-            const number = parseInt(v.replace(/\D/g, ""));
+            const number = parseInt(v.name.replace(/\D/g, ""));
             if (!isNaN(number) && number > acc) return number;
             else return acc;
           }, -1);
