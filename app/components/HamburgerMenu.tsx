@@ -71,17 +71,22 @@ export default function HamburgerMenu(props: { children: React.ReactNode }) {
 
 
 function LoggedOutMenuContent(props: { onActionComplete: () => void }) {
+
+  // Login popup modal
   const {
     isOpen: isLoginOpen,
     onOpen: onLoginOpen,
     onClose: onLoginClose,
   } = useDisclosure();
+
+  // register popup modal
   const {
     isOpen: isRegisterOpen,
     onOpen: onRegisterOpen,
     onClose: onRegisterClose,
   } = useDisclosure();
 
+  // after login/register, close both this modal and the outer modal
   const loginCallback = useCallback(() => {
     onLoginClose();
     props.onActionComplete();
