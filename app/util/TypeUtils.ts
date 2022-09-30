@@ -12,7 +12,7 @@ export function typedHasKey<T extends {}, K extends PropertyKey>(
 export type KeyedRecord<
   K extends keyof V,
   V extends { [Key in K]: string | number | symbol }
-> = Record<V[K], V>;
+> = Record<V[K], V> | {}; // empty record is still a record
 
 export function generateRecord<
   K extends keyof V,
