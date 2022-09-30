@@ -6,12 +6,12 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("POSTGRESQL_URL")
+  provider = "sqlite"
+  url      = env("SQLITE_URL")
 }
 
 model User {
-  uuid            String       @id @unique @default(cuid())
+  uuid            String       @id @unique
   username        String       @unique
   email           String       @unique
   passwordHash    String
@@ -24,8 +24,8 @@ model Calculator {
   uuid        String @id @unique @default(cuid())
   slug        String
   displayName String
-  inputs      String @db.Text
-  outputs     String @db.Text
+  inputs      String 
+  outputs     String
   author      User   @relation(fields: [authorUuid], references: [uuid])
   authorUuid  String
 
