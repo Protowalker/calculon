@@ -31,7 +31,4 @@ export const action: ActionFunction = async ({ request}) => {
   }
 
   return json(outData, {headers: {"Set-Cookie": await commitSession(session)}});
-
-  //const URL = data.get("destination") === "home" ? "/calculon" : `/calculon/${data.get("destination")}`
-  //return redirect(URL, {headers: {"Set-Cookie": await commitSession(session)}})
 };
