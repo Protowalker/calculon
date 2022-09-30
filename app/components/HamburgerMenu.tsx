@@ -18,10 +18,11 @@ import {
   ModalOverlay,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { useMatch } from "react-router";
 import { useFetcher, useMatches } from "remix";
-import { Destination, LoginBox } from "~/routes/login";
+import { LoginBox } from "./LoginBox";
+import { RegisterBox } from "./RegisterBox";
 
 export default function HamburgerMenu(props: { children: React.ReactNode }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -46,7 +47,7 @@ export default function HamburgerMenu(props: { children: React.ReactNode }) {
           <DrawerCloseButton />
           <DrawerHeader>Calculon</DrawerHeader>
           <DrawerBody>
-            <MenuContent />
+            <MenuContent onActionComplete={onClose}/>
           </DrawerBody>
           <DrawerFooter>BWAHHH</DrawerFooter>
         </DrawerContent>
@@ -55,28 +56,40 @@ export default function HamburgerMenu(props: { children: React.ReactNode }) {
   );
 }
 
-function MenuContent() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const params = useMatches()[0].params;
-  const destination: Destination = useMemo(() => {
-    if (typeof params.calcId !== "undefined")
-      return `${params.username}/${params.calcId}` as Destination;
-    else return "home";
-  }, [params]);
+function MenuContent(props: {onActionComplete: (() => void)}) {
+  const { isOpen: isLoginOpen, onOpen: onLoginOpen, onClose: onLoginClose } = useDisclosure();
+  const { isOpen: isRegisterOpen, onOpen: onRegisterOpen, onClose: onRegisterClose } = useDisclosure();
+
+
+  const loginCallback = useCallback(() => {
+    onLoginClose();
+    props.onActionComplete();
+  }, [onLoginClose, props.onActionComplete]);
+
+  const registerCallback = useCallback(() => {
+    onRegisterClose();
+    props.onActionComplete();
+  }, [onRegisterClose, props.onActionComplete]);
 
   return (
     <>
       <Flex width="100%" alignItems="stretch">
-        <Button width="100%" mr="1em" onClick={onOpen}>
+        <Button width="100%" mr="1em" onClick={onLoginOpen}>
           Log in
         </Button>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isLoginOpen} onClose={onLoginClose}>
           <ModalOverlay />
           <ModalContent>
-            <LoginBox destination={destination} />
+            <LoginBox onSuccess={loginCallback}/>
           </ModalContent>
         </Modal>
-        <Button width="100%">Sign up</Button>
+        <Button width="100%" onClick={onRegisterOpen}>Register</Button>
+        <Modal isOpen={isRegisterOpen} onClose={onRegisterClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <RegisterBox onSuccess={registerCallback}/>
+          </ModalContent>
+        </Modal>
       </Flex>
     </>
   );
