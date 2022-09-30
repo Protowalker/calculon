@@ -1,6 +1,7 @@
 import { Provider } from "react-redux";
 import {
   ActionFunction,
+  createSession,
   LoaderFunction,
   MetaFunction,
   useLoaderData,
@@ -18,6 +19,7 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import { db } from "~/util/db.server";
 import { generateRecord } from "~/util/TypeUtils";
 import { calcNameReducer } from "~/Store/CalculatorInfo";
+import { getSession } from "~/sessions";
 
 export const meta: MetaFunction = (args) => {
   return {
@@ -25,9 +27,9 @@ export const meta: MetaFunction = (args) => {
   };
 };
 
-export const loader: LoaderFunction = async (
-  args
-): Promise<Pick<RootState, "inputs" | "outputs" | "calcName">> => {
+export const loader = (async (
+  args: Parameters<LoaderFunction>[0]
+): Promise<Pick<RootState, "inputs" | "outputs" | "calcName"> & ({loggedIn: false} | {loggedIn: true, uuid: string}) >  => {
   const data = await db.calculator.findFirst({
     where: {
       author: { username: args.params.username! },
@@ -35,19 +37,25 @@ export const loader: LoaderFunction = async (
     },
   });
 
+  const session = getSession(args.request.headers.get("Cookie"));
+  
+  const uuid = (await session).get("uuid");
+
   if (!data) {
     console.error("incorrect, TODO");
-    return { inputs: {}, outputs: {}, calcName: "New calculator" };
+    return { inputs: {}, outputs: {}, calcName: "New calculator", loggedIn: uuid !== null, uuid: uuid };
   }
   return {
     inputs: generateRecord(JSON.parse(data?.inputs) as InputData[], "uuid"),
     outputs: generateRecord(JSON.parse(data?.outputs) as OutputData[], "uuid"),
     calcName: data.displayName,
+    loggedIn: uuid !== null,
+    uuid: uuid
   };
-};
+});// satisfies LoaderFunction;
 
 export default function Calculon() {
-  const preloadedState = useLoaderData<Pick<RootState, "inputs" | "outputs">>();
+  const loaderData = useLoaderData<Awaited<ReturnType<typeof loader>>>();
 
   const store = useMemo(
     () =>
@@ -58,7 +66,7 @@ export default function Calculon() {
           editMode: editModeReducer,
           calcName: calcNameReducer,
         },
-        preloadedState: preloadedState,
+        preloadedState: {inputs: loaderData.inputs, outputs: loaderData.outputs, calcName: loaderData.calcName},
       }),
 
     []
