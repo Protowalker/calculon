@@ -1,19 +1,45 @@
 import {
   Links,
   LiveReload,
+  LoaderFunction,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
+  json
 } from "remix";
 import type { MetaFunction } from "remix";
 import { ChakraProvider } from "@chakra-ui/react";
+import { createContext } from "react";
+import { commitSession, getSession, SessionInfo, SessionInfoType } from "./sessions";
+import { db } from "./util/db.server";
 
 export const meta: MetaFunction = () => {
   return { title: "Home of Calculon" };
 };
 
+
+export const loader: LoaderFunction = async ({request}) => {
+  const session = await getSession(request.headers.get("Cookie"));
+
+  const userId = session.get("userId");
+  const username = await db.user.findFirst({select: {username: true}, where: {uuid: userId}});
+
+  const contextObject: SessionInfoType = {
+    userId: userId,
+    username: username?.username
+  };
+
+  return json(contextObject, {headers: {
+    "Set-Cookie": await commitSession(session)
+  }});
+};
+
+
 export default function App() {
+  const sessionInfo = useLoaderData<SessionInfoType>();
+
   return (
     <html lang="en">
       <head>
@@ -24,7 +50,9 @@ export default function App() {
       </head>
       <body>
         <ChakraProvider>
-          <Outlet />
+          <SessionInfo.Provider value={sessionInfo}>
+            <Outlet />
+          </SessionInfo.Provider>
         </ChakraProvider>
         <ScrollRestoration />
         <Scripts />
