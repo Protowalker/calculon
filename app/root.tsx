@@ -11,7 +11,10 @@ import {
 } from "remix";
 import type { MetaFunction } from "remix";
 import { ChakraProvider } from "@chakra-ui/react";
-import { commitSession, getSession, SessionInfo, SessionInfoType } from "./sessions";
+import { commitSession, getSession } from "./sessions.server";
+import {
+  SessionInfo, SessionInfoType
+} from "./sessions";
 import { db } from "./util/db.server";
 
 export const meta: MetaFunction = () => {

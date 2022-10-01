@@ -19,7 +19,7 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import { db } from "~/util/db.server";
 import { generateRecord } from "~/util/TypeUtils";
 import { calcNameReducer } from "~/Store/CalculatorInfo";
-import { getSession } from "~/sessions";
+import { getSession } from "~/sessions.server";
 
 export const meta: MetaFunction = (args) => {
   return {
