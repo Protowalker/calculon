@@ -1,6 +1,7 @@
 import { DataFunctionArgs } from "@remix-run/server-runtime";
 import { ActionFunction, LoaderFunction } from "remix";
 import invariant from "tiny-invariant";
+import { getSession } from "~/sessions";
 import { InputData, inputsReducer } from "~/Store/Inputs";
 import { OutputData } from "~/Store/Outputs";
 import { db } from "~/util/db.server";
@@ -15,9 +16,14 @@ import { KeyedRecord } from "~/util/TypeUtils";
 //    }
 //};
 
-export const action: ActionFunction = async (args) => {
-  const data = await args.request.formData();
+export const action: ActionFunction = async ({request}) => {
+  const data = await request.formData();
+  const session = await getSession(request.headers.get("Cookie"));
+
+  const userId = session.get("userId");
+
   // TODO: better validation
+  invariant(userId != null, "expected userId");
   invariant(data.get("slug") != null, "expected data.slug");
   invariant(data.get("displayName") != null, "expected data.displayName");
   invariant(data.get("inputs") != null, "expected data.inputs");
@@ -50,13 +56,18 @@ export const action: ActionFunction = async (args) => {
     where: { username: validated.authorUsername },
   });
   // TODO: Better validation of author (though in reasonable usage it's incredibly unlikely that this codepath will ever get hit)
-  invariant(author !== null, "Failed to find author with specified username");
+  invariant(author != null, "Failed to find author with specified username");
 
   const parsed = {
     ...validated,
     authorUsername: undefined,
     authorUuid: author.uuid,
   };
+
+  // If the logged in author isn't the author of this calculator, don't let them save it
+  if (author.uuid !== userId) { 
+    return new Response(null, { status: 401, statusText: "User not authorized to write to this calculator" });
+  }
 
   const result = await db.calculator.upsert({
     where: { authorUuid_slug: { authorUuid: author.uuid, slug: parsed.slug } },

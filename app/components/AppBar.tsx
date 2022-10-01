@@ -12,6 +12,7 @@ import {
 import { motion } from "framer-motion";
 import _ from "lodash";
 import { Form, useFetcher, useParams } from "remix";
+import { useSessionInfo } from "~/sessions";
 import { changeName, selectCalcName } from "~/Store/CalculatorInfo";
 import { selectEditMode, toggleEditMode } from "~/Store/EditMode";
 import { useAppDispatch, useAppSelector } from "~/Store/Hooks";
@@ -34,7 +35,9 @@ export default function AppBar() {
   const calcName = useAppSelector(selectCalcName);
   const theme = useTheme();
 
-  const ownsThis = true;
+  const sessionInfo = useSessionInfo();
+
+  const ownsThis = sessionInfo.username && sessionInfo.username === username;
 
   const clipboardToast = useToast();
 
