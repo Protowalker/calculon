@@ -9,8 +9,15 @@ import { TypographyInput } from "~/util/CustomComponents";
 import BaseOutput from "./BaseOutput";
 import { parseExpressionString } from "./Output";
 
-export const TextOutputData = Object.freeze({
-  kind: "text" as const,
+export const TextOutputData = Object.freeze<{
+  kind: "text";
+  name: string;
+  displayName: string;
+  uuid: string;
+  order: number;
+  value: string;
+}>({
+  kind: "text",
   name: "text0",
   displayName: "A Text Output",
   uuid: "",

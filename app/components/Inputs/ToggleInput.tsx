@@ -3,7 +3,14 @@ import BaseInput, { InputNames } from "~/components/Inputs/BaseInput";
 import { useAppDispatch } from "~/Store/Hooks";
 import { changeInput } from "~/Store/Inputs";
 
-export const ToggleInputData = Object.freeze({
+export const ToggleInputData = Object.freeze<{
+  kind: "toggle";
+  name: string;
+  displayName: string;
+  order: number;
+  value: boolean;
+  uuid: string;
+}>({
   kind: "toggle" as const,
   name: "",
   displayName: "A Toggle Input",

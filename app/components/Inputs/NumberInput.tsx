@@ -5,7 +5,14 @@ import { useValidatedValue, Validator } from "~/util/Hooks";
 import { useAppDispatch } from "~/Store/Hooks";
 import { changeInput } from "~/Store/Inputs";
 
-export const NumberInputData = Object.freeze({
+export const NumberInputData = Object.freeze<{
+  kind: "number";
+  name: string;
+  displayName: string;
+  order: number;
+  value: number;
+  uuid: string;
+}>({
   kind: "number" as const,
   name: "",
   displayName: "A Number Input",

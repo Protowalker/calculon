@@ -9,8 +9,15 @@ import { TypographyInput } from "~/util/CustomComponents";
 import BaseOutput from "./BaseOutput";
 import { parseExpressionString } from "./Output";
 
-export const HeaderOutputData = Object.freeze({
-  kind: "header" as const,
+export const HeaderOutputData = Object.freeze<{
+  kind: "header";
+  name: string;
+  displayName: string;
+  value: string;
+  order: number;
+  uuid: string;
+}>({
+  kind: "header",
   name: "",
   displayName: "A Header",
   uuid: "",
