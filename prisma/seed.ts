@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient, User } from "@prisma/client";
+import { passwordHash } from "~/util/dbUtils/validateCredentials.server";
 const db = new PrismaClient();
 
 async function seed() {
@@ -16,8 +17,9 @@ async function createAuthor() {
       email: "protowalkerofficial@gmail.com",
       githubConnected: false,
       googleConnected: false,
-      passwordHash: "abcd",
+      passwordHash: passwordHash("1", "doYouLikeHowIWalk"),
       username: "GreatHostCalculon",
+      uuid: "1"
     },
   });
 }
