@@ -95,7 +95,6 @@ export const inputsSlice = createSlice({
           .map((v, i) => ({ ...v, order: i }));
 
         for (const input of inputs) {
-          console.log(input);
           state[input.uuid] = { ...input };
         }
 
