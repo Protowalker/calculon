@@ -1,5 +1,5 @@
 import { ActionFunction, LoaderFunction, redirect, useActionData, useFetcher, useLoaderData } from "remix";
-import { commitSession, getSession } from "~/sessions";
+import { commitSession, getSession } from "~/sessions.server";
 import validateCredentials from "~/util/dbUtils/validateCredentials.server";
 import { json } from "remix";
 

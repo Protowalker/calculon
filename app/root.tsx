@@ -11,8 +11,10 @@ import {
 } from "remix";
 import type { MetaFunction } from "remix";
 import { ChakraProvider } from "@chakra-ui/react";
-import { createContext } from "react";
-import { commitSession, getSession, SessionInfo, SessionInfoType } from "./sessions";
+import { commitSession, getSession } from "./sessions.server";
+import {
+  SessionInfo, SessionInfoType
+} from "./sessions";
 import { db } from "./util/db.server";
 
 export const meta: MetaFunction = () => {
@@ -24,7 +26,8 @@ export const loader: LoaderFunction = async ({request}) => {
   const session = await getSession(request.headers.get("Cookie"));
 
   const userId = session.get("userId");
-  const username = await db.user.findFirst({select: {username: true}, where: {uuid: userId}});
+  // Only get username if userId exists
+  const username = userId ? await db.user.findFirst({select: {username: true}, where: {uuid: userId}}) : null;
 
   const contextObject: SessionInfoType = {
     userId: userId,

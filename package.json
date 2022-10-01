@@ -12,6 +12,7 @@
     "@remix-run/serve": "^1.2.1",
     "byte-base64": "^1.1.0",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.0.3",
     "framer-motion": "^6.2.8",
     "lodash": "^4.17.21",
     "mathjs": "^10.1.1",

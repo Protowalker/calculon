@@ -25,6 +25,7 @@ export type BaseInputData = {
   name: string;
   displayName: string;
   order: number;
+  uuid: string;
 };
 
 export default function BaseInput(props: {

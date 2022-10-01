@@ -3,8 +3,15 @@ import BaseInput, { InputNames } from "~/components/Inputs/BaseInput";
 import { useAppDispatch } from "~/Store/Hooks";
 import { changeInput } from "~/Store/Inputs";
 
-export const TextInputData = Object.freeze({
-  kind: "text" as const,
+export const TextInputData = Object.freeze<{
+  kind: "text";
+  name: string;
+  displayName: string;
+  order: number;
+  value: string;
+  uuid: string;
+}>({
+  kind: "text",
   name: "",
   displayName: "A Text Input",
   order: -1,

@@ -1,11 +1,5 @@
-import { Alert, AlertIcon, AlertTitle, Center } from "@chakra-ui/react";
-import { ActionFunction, LoaderFunction, redirect, useActionData, useLoaderData } from "remix";
-import { Box, Button, Flex, Input, VStack } from "@chakra-ui/react";
-import { Form } from "remix";
-import { commitSession, getSession } from "~/sessions";
-import validateCredentials from "~/util/dbUtils/validateCredentials.server";
-import { assert } from "~/util/StuffThatShouldBeBuiltIn";
-import { useEffect } from "react";
+import { ActionFunction} from "remix";
+import { commitSession, getSession } from "~/sessions.server";
 import { json } from "remix";
 import newUser from "~/util/dbUtils/newUser.server";
 
