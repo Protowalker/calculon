@@ -58,6 +58,7 @@ export default function HeaderOutput({
             })
           )
         }
+        maxWidth="100%"
         sx={{ textAlign: "right" }}
       />{" "}
     </BaseOutput>
