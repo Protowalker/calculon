@@ -63,7 +63,7 @@ export default function BaseOutput({
               icon={<SettingsIcon />}
             />
           </HStack>
-          <Box sx={{ ml: "auto", width: "100%", ...sx }} className="HERE">
+          <Box sx={{ ml: "auto", width: "100%", ...sx }}>
             {children}
           </Box>
         </HStack>
