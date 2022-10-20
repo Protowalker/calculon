@@ -13,7 +13,7 @@ import { isServer } from "./misc";
 
 export const TypographyInput = (props: InputProps) => {
   const [widthRef, setWidthRef] = useState<HTMLElement | null>(null);
-  const [width, setWidth] = useState("10ch");
+  const [width, setWidth] = useState(`${(props.value as string).length + 3}ch`);
   useEffect(() => {
     const pxWidth = widthRef?.getBoundingClientRect().width;
     if (pxWidth) setWidth((pxWidth + 1).toString() + "px");
@@ -26,21 +26,23 @@ export const TypographyInput = (props: InputProps) => {
 
   return (
     <>
-      <Text
-        {...textProps}
-        as="span"
-        ref={(ref: HTMLElement | null) => setWidthRef(ref)}
-        position="absolute"
-        visibility="hidden"
-        whiteSpace="pre"
-      >
-        {props.value as string}
-      </Text>
+      <Box position="relative" width="0">
+        <Text
+          {...textProps}
+          as="span"
+          ref={(ref: HTMLElement | null) => setWidthRef(ref)}
+          position="absolute"
+          visibility="hidden"
+          whiteSpace="pre"
+        >
+          {props.value as string}
+        </Text>
+      </Box>
       <Input
         {...props}
         variant="unstyled"
         p={0}
-        width={isServer ? `${(props.value as string).length + 3}ch` : width}
+        width={width}
         minWidth="1ch"
         minHeight="1.6em"
         outlineColor={
