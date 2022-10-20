@@ -1,3 +1,4 @@
+import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
   Flex,
@@ -9,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { Calculator, Prisma, User } from "@prisma/client";
 import { Link, LoaderFunction, redirect, useLoaderData } from "remix";
+import HamburgerMenu from "~/components/HamburgerMenu";
 import { db } from "~/util/db.server";
 
 export const loader: LoaderFunction = async (args) => {
@@ -20,7 +22,9 @@ export const loader: LoaderFunction = async (args) => {
 
 export default function Calculon() {
   const calculators = useLoaderData<(Calculator & { author: User })[]>();
-  return (
+  return (<>
+    <HamburgerMenu>
+    </HamburgerMenu>
     <SimpleGrid columns={6} spacing="10">
       {calculators.map((v, i) => (
         <GridItem
@@ -38,5 +42,6 @@ export default function Calculon() {
         </GridItem>
       ))}
     </SimpleGrid>
+  </>
   );
 }
