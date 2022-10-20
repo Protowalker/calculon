@@ -51,7 +51,8 @@
     "build": "cross-env NODE_ENV=production remix build",
     "dev": "cross-env NODE_ENV=development remix dev",
     "start": "cross-env NODE_ENV=production remix-serve build",
-    "heroku-postbuild": "cross-env NODE_ENV=production remix build && npx prisma db push && npx prisma db seed"
+    "heroku-postbuild": "cross-env NODE_ENV=production remix build && npx prisma db push && npx prisma db seed",
+    "typecheck": "tsc -b"
   },
   "prisma": {
     "seed": "node --require esbuild-register prisma/seed.ts"
